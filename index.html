@@ -275,7 +275,7 @@ table.sheet{border-collapse:collapse;width:100%;min-width:560px;font:400 13px/1.
 .st.ok::before{background:var(--ok)}
 .st.wait::before{background:var(--wait)}
 .sheet-hint{padding:9px 14px;font-size:13px;color:var(--ink2);border-top:1px solid var(--line);background:var(--card)}
-.log{padding:12px 14px;display:grid;gap:6px;font-size:13.5px;max-height:216px;min-height:120px;overflow:auto;align-content:start}
+.log{padding:12px 14px;display:grid;gap:6px;font-size:13.5px;max-height:176px;min-height:110px;overflow:auto;align-content:start}
 .log li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px}
 .log time{font:500 12.5px/1.65 var(--fm);color:var(--ink3)}
 .log li.sys{color:var(--ink2)}
@@ -288,6 +288,44 @@ table.sheet{border-collapse:collapse;width:100%;min-width:560px;font:400 13px/1.
 .cnts span{font-size:12.5px;color:var(--ink2);line-height:1.3;display:block;margin-top:5px}
 .demo-end{margin-top:14px;padding:14px 16px;border-radius:12px;background:var(--ok-soft);font-size:15.5px}
 .demo-cap{margin-top:14px;font-size:14px;color:var(--ink3);max-width:86ch}
+
+/* демо: чем отличаются варианты */
+.who{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);padding:12px 14px}
+.who-h{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:10px}
+.who-h b{font-weight:600;font-size:14.5px;margin-right:auto}
+.tg{display:inline-flex;align-items:center;font:500 11.5px/1 var(--fm);padding:5px 8px;border-radius:7px;letter-spacing:.02em;white-space:nowrap}
+.tg-hand{background:var(--wait-soft);color:var(--wait)}
+.tg-sys{background:var(--ok-soft);color:var(--ok)}
+.tg-hum{background:var(--bg2);color:var(--ink2)}
+.who5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.who5 li{background:var(--card);border:1px solid var(--line2);border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;font-size:13px;line-height:1.35;color:var(--ink2);min-width:0}
+.who5 .s{font:500 11px/1.2 var(--fm);letter-spacing:.05em;text-transform:uppercase;color:var(--ink3)}
+.who5 li.cur{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc-soft)}
+.who5 li.flash{animation:flash 1.2s var(--ease-out)}
+.who-f{margin-top:10px;font-size:13.5px;color:var(--ink2)}
+.gform{display:grid;gap:6px;margin-top:10px}
+.gform div{font-size:11.5px;color:var(--ink3)}
+.gform span{display:block;margin-top:2px;padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:13.5px}
+.hand-n{margin-top:10px;font-size:13px;color:var(--wait);font-weight:600}
+.chk{margin-top:10px;display:grid;gap:4px;font-size:13px;color:var(--ok)}
+.chk li{display:flex;gap:6px;align-items:center}
+.chk svg{width:14px;height:14px;flex:none}
+.hand{margin-top:10px;display:grid;gap:5px;font-size:13px;color:var(--ink2);counter-reset:h}
+.hand li{counter-increment:h;padding-left:24px;position:relative}
+.hand li::before{content:counter(h);position:absolute;left:0;top:1px;width:17px;height:17px;border-radius:50%;background:var(--wait-soft);color:var(--wait);font:700 10.5px/17px var(--fm);text-align:center}
+.bankp{padding:10px 14px;font-size:13.5px;background:var(--card)}
+.bank-off{color:var(--ink3)}
+.stm{display:grid;gap:6px}
+.stm li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:baseline}
+.stm time{font:500 12.5px/1.5 var(--fm);color:var(--ink3)}
+.stm b{font:700 13px/1.5 var(--fm);white-space:nowrap}
+.stm li.old{color:var(--ink3)}
+.stm li.old b{font-weight:500}
+.stm li.note{display:block;color:var(--ink3)}
+.stm li.wait{display:block;color:var(--wait);font-weight:600}
+.stm em{grid-column:2/-1;font-style:normal;font-size:12.5px;color:var(--ok);font-weight:600;display:flex;gap:6px;align-items:center}
+.stm em svg{width:14px;height:14px;flex:none}
+.demo-end .btn{margin-top:10px}
 
 /* answer 2 */
 .stairs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
@@ -407,6 +445,26 @@ details.pr summary small{font:400 14px/1.3 var(--fb);color:var(--ink3)}
 .pr li{counter-increment:p;padding:12px 14px 12px 48px;position:relative;background:var(--bg);border-radius:12px;font-size:15px}
 .pr li::before{content:counter(p,decimal-leading-zero);position:absolute;left:14px;top:13px;font:500 12.5px/1.6 var(--fm);color:var(--acc-ink)}
 
+/* реальные промпты и их версии */
+.adp{display:flex;flex-direction:column;gap:10px}
+.adp .k{font:500 11.5px/1 var(--fm);letter-spacing:.05em;text-transform:uppercase;color:var(--acc-ink)}
+.adp h4{font:700 18px/1.25 var(--fb)}
+.adp .from{font-size:13.5px;color:var(--ink3)}
+.orig,.ver{padding:11px 13px;border-radius:11px;min-width:0}
+.orig{background:var(--bg);border:1px dashed var(--line);font:500 13px/1.5 var(--fm)}
+.ver{background:var(--acc-soft);font-size:14.5px}
+.orig b,.ver b{display:block;font:500 11px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:7px}
+.ver dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 12px}
+.ver dt{font-weight:600}
+.ver dd{margin:0}
+.adp .ft{font-size:13.5px;color:var(--ink3);margin-top:auto}
+.wk{border-top:1px solid var(--line2)}
+.wk div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px 20px;padding:11px 0;border-bottom:1px solid var(--line2);font-size:14.5px}
+.wk div:last-child{border-bottom:0;padding-bottom:0}
+.wk span+span{color:var(--ink2)}
+.wk span+span::before{content:"→ ";color:var(--ok);font-weight:700}
+.kp i{display:block;margin-top:6px;font:500 12px/1.45 var(--fm);font-style:normal;color:var(--ink3)}
+
 /* links, plan */
 .lk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 36px}
 .lk h4{font:500 12px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
@@ -426,6 +484,9 @@ details.pr summary small{font:400 14px/1.3 var(--fb);color:var(--ink3)}
   .demo-grid,.cred,.feat,.feat.rev{grid-template-columns:minmax(0,1fr)}
   .feat.rev .frame{order:0}
   .tt,.kp,.days{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .who5{grid-template-columns:minmax(0,1fr)}
+  .who5 li{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 10px}
+  .who5 .s{flex:0 0 132px}
   .mx .card,.mx .card.w{grid-column:span 3}
 }
 @media (max-width:860px){
@@ -439,6 +500,7 @@ details.pr summary small{font:400 14px/1.3 var(--fb);color:var(--ink3)}
   .promise>div+div{border-left:0;border-top:1px dashed var(--line)}
   .asm-r{grid-template-columns:28px minmax(0,1fr)}.asm-r .if{grid-column:2}
   .check div{grid-template-columns:minmax(0,1fr)}
+  .wk div{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:560px){
   .src,.stairs,.tt,.kp,.days{grid-template-columns:minmax(0,1fr)}
@@ -465,14 +527,14 @@ details.pr summary small{font:400 14px/1.3 var(--fb);color:var(--ink3)}
 @media (prefers-reduced-motion:no-preference){
   :root{scroll-behavior:smooth}
   .rv.in{animation:rise .7s var(--ease-out) both;animation-delay:calc(var(--i,0)*70ms)}
-  .bc.in,.log li.in{animation:pop .32s var(--ease-out) both}
+  .bc.in,.log li.in,.stm li.in{animation:pop .32s var(--ease-out) both}
   .dia.live .flow{animation:dash 1.1s linear infinite}
   .dia.live .ln-bad{animation:dash2 1.2s linear infinite}
   .stairs.in .stp::before{background:var(--acc);animation:fill .6s var(--ease-out) both;animation-delay:calc(var(--i,0)*180ms + 200ms)}
 }
 @media (prefers-reduced-motion:reduce){
   .trk li.now i::before,.pulse::after{animation:none}
-  .bc.in,.log li.in{animation:fade .2s ease both}
+  .bc.in,.log li.in,.stm li.in{animation:fade .2s ease both}
   .msg{transition:none}
 }
 </style>
@@ -600,6 +662,7 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
     <li class="th"><div class="th-n">8</div><blockquote>«У нас уже есть окно, где продумано, как всё считается. Таким окном можно заменить Google-форму»</blockquote><p class="th-out"><span>Что из этого выросло</span>Форма только собирает поля. Окно считает, подсказывает и не даёт отправить с ошибкой. Показываю на работающем примере. <a href="#proof">Кадры →</a></p></li>
     <li class="th"><div class="th-n">9</div><blockquote>«Обещать меньше, но дать больше»</blockquote><p class="th-out"><span>Что из этого выросло</span>В плане обещан один шаг и одна цифра. Демо, схемы и кадры на этой странице идут сверх обещанного. <a href="#short">Обещание →</a></p></li>
     <li class="th"><div class="th-n">10</div><blockquote>«Поищи готовые решения и что делает сообщество. И проверь, правда ли Альтман и Карпатый начинают любую задачу с одного промпта»</blockquote><p class="th-out"><span>Что из этого выросло</span>Нашёл шаблоны и API банков, ссылки приложил. Универсальный промпт не подтвердился, написал как есть. <a href="#made">Проверка →</a></p></li>
+    <li class="th"><div class="th-n">11</div><blockquote>«Чем отличаются быстрый и надёжный? При запуске демо будто играет одно и то же»</blockquote><p class="th-out"><span>Что из этого выросло</span>Смотрю на результат глазами того, кто видит его впервые. Демо переделано: разница теперь видна в строке «кто что делает» и в окне банка. <a href="#demo">Демо →</a></p></li>
   </ol>
 </div></section>
 
@@ -722,7 +785,7 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
   <h3 class="h3" style="margin-top:0">Куда смотрю до разговоров<small>Всё это уже есть, ничего внедрять не нужно. Нужен только доступ на чтение.</small></h3>
   <div class="src">
     <div class="card rv" style="--i:0"><span class="ico"><svg><use href="#i-doc"/></svg></span><b>Время в форме</b><p>Когда заявка реально подана. Это точка отсчёта.</p></div>
-    <div class="card rv" style="--i:1"><span class="ico"><svg><use href="#i-sheet"/></svg></span><b>История правок таблицы</b><p>Кто и когда поставил каждое согласование и отметку об оплате.</p></div>
+    <div class="card rv" style="--i:1"><span class="ico"><svg><use href="#i-sheet"/></svg></span><b>История правок таблицы</b><p>Кто и когда ставил согласование и отметку об оплате. По ячейкам она смотрится вручную, поэтому беру выборку из 30 заявок.</p></div>
     <div class="card rv" style="--i:2"><span class="ico"><svg><use href="#i-chat"/></svg></span><b>Выгрузка чата</b><p>Сколько сообщений на заявку, кто кого спрашивает, когда пришла платёжка.</p></div>
     <div class="card rv" style="--i:3"><span class="ico"><svg><use href="#i-bank"/></svg></span><b>Выписки банков</b><p>Настоящее время списания. Сравниваю с временем согласования.</p></div>
     <div class="card rv" style="--i:4"><span class="ico"><svg><use href="#i-chart"/></svg></span><b>Сама таблица</b><p>Сколько заявок, доля постоянных подрядчиков, возвраты на доработку.</p></div>
@@ -739,7 +802,7 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
       <div><b>T3</b><strong>Ждёт оплаты</strong><small>история таблицы → выписка банка</small></div>
       <div><b>T4</b><strong>Ждёт подтверждения</strong><small>выписка банка → сообщение в чате</small></div>
     </div>
-    <p style="margin-top:18px;font-size:15px;color:var(--ink2)">Рядом два счётчика шума: сколько сообщений в чате приходится на одну заявку и сколько раз в день люди открывают таблицу, чтобы «просто проверить». Самый длинный интервал и есть место, куда бить первым.</p>
+    <p style="margin-top:18px;font-size:15px;color:var(--ink2)">Рядом два счётчика шума: сколько сообщений в чате приходится на одну заявку и сколько раз в день люди открывают таблицу, чтобы «просто проверить». Самый длинный интервал и есть место, куда бить первым. Чтобы дальше не считать руками, с первого дня включаю запись времени каждой правки в таблице: через две недели есть точная база по всем заявкам, а не по выборке.</p>
   </div>
 
   <h3 class="h3">Что спрошу у участников<small>По 20–30 минут с каждым. Спрашиваю про последний конкретный случай, а не «как обычно».</small></h3>
@@ -785,7 +848,7 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 </div></section>
 
 <section id="demo" class="band"><div class="wrap">
-  <div class="sh"><span class="sn">06</span><h2>Живое демо: одна заявка, три окна</h2><p>Это концепт под ваш кейс, он работает прямо на странице. Сыграйте за участников сами или включите автопоказ. Следите за тем, чего на экране нет: общего чата с вопросами.</p></div>
+  <div class="sh"><span class="sn">06</span><h2>Живое демо: одна заявка, три окна</h2><p>Это концепт под ваш кейс, он работает прямо на странице. Сыграйте за участников сами или включите автопоказ, а потом переключите вариант и сравните. Следите за тем, чего на экране нет: общего чата с вопросами.</p></div>
 
   <div class="demo" id="demoBox">
     <div class="demo-bar">
@@ -800,6 +863,17 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
       <span class="sp"></span>
       <button type="button" class="btn btn-acc" data-act="auto"><svg><use href="#i-play"/></svg>Показать автоматически</button>
       <button type="button" class="btn" data-act="reset"><svg><use href="#i-reset"/></svg>Сначала</button>
+    </div>
+    <div class="who">
+      <div class="who-h"><b>Кто что делает в этом варианте</b><span class="tg tg-hand">руками</span><span class="tg tg-sys">система</span><span class="tg tg-hum">человек решает</span></div>
+      <ol class="who5" id="demoWho">
+        <li><span class="s">1 · Заявка</span><span class="tg tg-hand">руками</span><span>5 полей в Google-форме</span></li>
+        <li><span class="s">2 · Статус</span><span class="tg tg-sys">система</span><span>приходит сам в мессенджер</span></li>
+        <li><span class="s">3 · Согласование</span><span class="tg tg-hum">человек решает</span><span>кнопкой или в таблице</span></li>
+        <li><span class="s">4 · Платёж</span><span class="tg tg-hand">руками</span><span>реквизиты в банк-клиенте</span></li>
+        <li><span class="s">5 · Подтверждение</span><span class="tg tg-hand">руками</span><span>кнопка и файл платёжки</span></li>
+      </ol>
+      <p class="who-f">Общее у обоих вариантов: статус приходит сам, решают люди. Разное: сколько остаётся ручной работы и кто подтверждает оплату. Переключите вариант, и строка покажет разницу.</p>
     </div>
     <p class="demo-now" id="demoNow" aria-live="polite">Сейчас ход: <b>Сотрудник №1</b>. Нажмите кнопку в окне мессенджера.</p>
 
@@ -817,27 +891,31 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
           <p class="sheet-hint">Согласовать можно и здесь, как раньше. Бот увидит правку и обновит карточку: связь двусторонняя.</p>
         </div>
         <div class="win">
+          <div class="win-h"><svg><use href="#i-bank"/></svg>Банк · выписка<small id="demoBankNote">не подключён</small></div>
+          <div class="bankp" id="demoBank"><p class="bank-off">Банк не подключён. О том, что платёж прошёл, система узнаёт от человека: он нажимает кнопку и прикладывает файл.</p></div>
+        </div>
+        <div class="win">
           <div class="win-h"><svg><use href="#i-log"/></svg>Журнал заявки<small>условное время сценария</small></div>
           <ol class="log" id="demoLog"><li class="empty">Пока пусто. Каждое действие попадёт сюда со временем.</li></ol>
           <div class="cnts" id="demoCnts">
             <div><b>0</b><span>вопросов «когда?» в общем чате</span></div>
-            <div><b>0</b><span>нажатий людей</span></div>
-            <div><b>0</b><span>походов в таблицу за статусом</span></div>
-            <div><b>—</b><span>от заявки до оплаты</span></div>
+            <div><b>0</b><span>ручных действий</span></div>
+            <div><b>0</b><span>полей вбито руками</span></div>
+            <div><b>—</b><span>оплату подтвердил</span></div>
           </div>
         </div>
       </div>
     </div>
-    <p class="demo-end" id="demoEnd" hidden></p>
+    <div class="demo-end" id="demoEnd" hidden></div>
   </div>
-  <p class="demo-cap">Суммы, названия и время выдуманы. В быстром варианте оплату подтверждает плательщик кнопкой. В надёжном система сама готовит черновик платёжки и сама находит списание в выписке, человек только подписывает. В обоих вариантах таблица остаётся рабочей.</p>
+  <p class="demo-cap">Результат для команды у обоих вариантов один: вопросов в чате нет, таблица остаётся рабочей. Отличается ручная работа. В быстром заявку и платёж вбивают руками, а оплату подтверждает человек. В надёжном счёт читается сам, платёжку готовит система, а оплату подтверждает выписка банка. Суммы, названия и время выдуманы.</p>
 </div></section>
 
 <section id="q2"><div class="wrap">
   <div class="sh"><span class="sn">07</span><span class="ans">Ответ на вопрос 2</span><h2>Что первым, что позже, а что не трогаю</h2><p>Иду ступенями. Каждая ступень приносит пользу сама по себе и не требует следующей. Если цифры покажут, что дальше идти незачем, останавливаемся.</p></div>
 
   <div class="stairs rv">
-    <div class="stp" style="--i:0"><span class="when">Неделя 1 · <em>до изменений</em></span><h4>Замер, ничего не меняю</h4><p>Выгружаю историю таблицы и чат, говорю с участниками, считаю четыре интервала и шум.</p><div class="get"><b>Что получаете</b>Цифру «как сейчас» и карту, где заявки ждут дольше всего.</div></div>
+    <div class="stp" style="--i:0"><span class="when">Неделя 1 · <em>до изменений</em></span><h4>Замер, ничего не меняю</h4><p>Разбираю выборку заявок по истории таблицы и чату, говорю с участниками, считаю четыре интервала и шум. Включаю запись времени правок.</p><div class="get"><b>Что получаете</b>Цифру «как сейчас» и карту, где заявки ждут дольше всего.</div></div>
     <div class="stp first" style="--i:1"><span class="when">Неделя 2 · <em>первым делом</em></span><h4>Статус приходит сам</h4><p>Бот с карточкой заявки и кнопками. Двусторонняя связь с таблицей. Напоминание, если заявка висит дольше оговорённого срока.</p><div class="get"><b>Что получаете</b>Вопрос «когда?» уходит из чата. Форма и таблица работают как раньше.</div></div>
     <div class="stp" style="--i:2"><span class="when">Недели 3–4 · <em>сразу после</em></span><h4>Оплата закрывается сама</h4><p>Система сопоставляет выписку с заявками и сама прикладывает платёжку. Окна оплаты, например 11:00 и 16:00: автор видит, когда ждать деньги.</p><div class="get"><b>Что получаете</b>Плательщиков перестают дёргать. Платёжки уходят из общего чата.</div></div>
     <div class="stp" style="--i:3"><span class="when">Дальше · <em>по цифрам</em></span><h4>Меньше согласований и ручного ввода</h4><p>Лимиты по договорам: в лимите без повторного «да», менеджерам только исключения. Умное окно вместо формы. Черновики платёжек в банке. Свой кабинет с дашбордом.</p><div class="get"><b>Что получаете</b>Люди касаются только исключений и подписи.</div></div>
@@ -944,7 +1022,7 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
   <div class="mx" style="margin-bottom:16px">
     <div class="card w"><span class="ico"><svg><use href="#i-eye"/></svg></span><h4>Сумму видит роль, а не все подряд</h4><p>Финансы видят точные суммы и получателей. Остальные, включая меня как разработчика, видят псевдоним и закрытую сумму.</p></div>
     <div class="card w"><span class="ico"><svg><use href="#i-shield"/></svg></span><h4>Разработка на выдуманных данных</h4><p>Стенд, тесты и демо работают на придуманных подрядчиках. Реальные строки в базе закрыты от разработчика на уровне самой базы.</p></div>
-    <div class="card w"><span class="ico"><svg><use href="#i-lock"/></svg></span><h4>Платёжки не лежат в общем чате</h4><p>Документ об оплате видят участники заявки. Его не листают все, кто когда-либо был добавлен в чат.</p></div>
+    <div class="card w"><span class="ico"><svg><use href="#i-lock"/></svg></span><h4>Платёжки не лежат в общем чате</h4><p>Документ об оплате видят участники заявки, а не все, кто когда-либо был добавлен в чат. В карточке бота только то, что нужно для решения. Реквизиты и сам документ открываются после входа.</p></div>
     <div class="card w"><span class="ico"><svg><use href="#i-log"/></svg></span><h4>У каждого действия есть след</h4><p>Кто согласовал, кто оплатил, кто исправил. На вопрос аудитора отвечает журнал, а не раскопки в переписке.</p></div>
   </div>
 
@@ -1072,23 +1150,66 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
     <div class="card"><h4>Кадры и видео</h4><p>Ни одного ручного скриншота. Автотест открыл систему на стенде с подменёнными данными, заменил названия, прошёл сценарии и записал экран. Дальше монтаж и сжатие.</p><div class="tools"><span>Playwright</span><span>ffmpeg</span><span>Pillow</span></div></div>
   </div>
 
-  <h3 class="h3">Про Карпатого, Альтмана и «универсальный промпт»<small>Я слышал, что они якобы начинают любую задачу с одного промпта, и попросил это проверить. Вот что нашлось.</small></h3>
-  <div class="check">
-    <div class="y"><b>Подтверждается</b><span>Андрей Карпатый поддержал термин context engineering: важна не хитрая формулировка, а то, какой контекст получает модель. Отсюда мой подход с допущениями, ссылками и готовыми наборами правил. <a href="https://the-decoder.com/shopify-ceo-and-ex-openai-researcher-agree-that-context-engineering-beats-prompt-engineering/" target="_blank" rel="noopener">The Decoder</a></span></div>
-    <div class="y"><b>Подтверждается</b><span>Существует открытый набор из четырёх принципов для ИИ-ассистентов по мотивам заметок Карпатого. Собрал его участник сообщества, а не сам Карпатый. <a href="https://cdn.jsdelivr.net/gh/multica-ai/andrej-karpathy-skills@main/README.md" target="_blank" rel="noopener">README набора</a></span></div>
-    <div class="n"><b>Не подтверждается</b><span>Что кто-то из них начинает каждую задачу с одного универсального промпта. Нашёлся только отдельный вирусный промпт, который Сэм Альтман одобрил в соцсети. <a href="https://techradar.com/computing/artificial-intelligence/new-chatgpt-prompt-goes-viral-with-sam-altmans-approval" target="_blank" rel="noopener">TechRadar</a></span></div>
+  <h3 class="h3">Настоящие промпты из сети и как они подстроены под задачу<small>Отдельной репликой я попросил найти реальные примеры и применить их к этому ответу. У каждого приёма показан оригинал и версия под задачу.</small></h3>
+  <div class="two">
+    <article class="card adp">
+      <span class="k">Приём 1 · как устроена постановка</span>
+      <h4>Цель, формат, предупреждения, контекст</h4>
+      <p class="from">Схема Бена Хайлака из статьи «o1 isn’t a chat model». Её пересылал президент OpenAI Грег Брокман. <a href="https://www.latent.space/p/o1-skill-issue" target="_blank" rel="noopener">Статья</a></p>
+      <div class="orig"><b>Оригинал</b><span lang="en">Goal → Return Format → Warnings → Context Dump</span></div>
+      <div class="ver"><b>Версия под эту задачу</b>
+        <dl>
+          <dt>Цель</dt><dd>Ответить на три вопроса задания так, чтобы было видно, как я думаю.</dd>
+          <dt>Формат</dt><dd>Одна страница: короткий ответ, потом подробности, два варианта, схемы и живой пример под их процесс.</dd>
+          <dt>Нельзя</dt><dd>Ломать то, что работает. Придумывать цифры. Забывать, что данные о деньгах чувствительны.</dd>
+          <dt>Контекст</dt><dd>Текст задания, мои допущения, моя действующая система как пример, найденные шаблоны и API банков.</dd>
+        </dl>
+      </div>
+      <p class="ft">Так выглядят мои реплики из списка ниже, если собрать их в один промпт по этой схеме.</p>
+    </article>
+    <article class="card adp">
+      <span class="k">Приём 2 · критерии вместо шагов</span>
+      <h4>Не говорить, что делать. Сказать, что считать готовым</h4>
+      <p class="from">Андрей Карпатый, заметки о работе с ИИ-ассистентом, январь 2026. <a href="https://x.com/karpathy/status/2015883857489522876" target="_blank" rel="noopener">Пост</a></p>
+      <div class="orig"><b>Оригинал</b><span lang="en">Don't tell it what to do, give it success criteria and watch it go.</span></div>
+      <div class="ver"><b>Версия под эту задачу</b>Я не диктовал, какие блоки нарисовать. Я задал, что считать хорошим ответом: видно, как я мыслю; три вопроса закрыты; макет собран под их процесс, а не под наш; обещано меньше, чем дано.</div>
+      <p class="ft">Это реплики 11–13 в списке ниже.</p>
+    </article>
   </div>
-  <h3 class="h3">Четыре принципа из этого набора и как они легли на ответ</h3>
+  <article class="card adp" style="margin-top:16px">
+    <span class="k">Приём 3 · взгляд со стороны</span>
+    <h4>Спросить, чего я сам не вижу</h4>
+    <p class="from">Вопрос Тома Моргана, который Сэм Альтман переслал со словами «love this», октябрь 2024. В оригинале он про человека, а не про задачу. <a href="https://techradar.com/computing/artificial-intelligence/new-chatgpt-prompt-goes-viral-with-sam-altmans-approval" target="_blank" rel="noopener">TechRadar</a></p>
+    <div class="two" style="gap:10px">
+      <div class="orig"><b>Оригинал</b><span lang="en">From all of our interactions what is one thing that you can tell me about myself that I may not know about myself?</span></div>
+      <div class="ver"><b>Версия под эту задачу</b>Из всего, что мы обсудили по этой задаче: какое слабое место в моём решении я сам не вижу?</div>
+    </div>
+    <p style="font-size:15px;color:var(--ink2)">Ассистент назвал три слабых места. Вот они и то, что после этого поправлено в ответе.</p>
+    <div class="wk">
+      <div><span>Замер «как сейчас» получится грубым: историю правок таблицы по ячейкам можно смотреть только вручную.</span><span>Беру выборку из 30 заявок и с первого дня включаю запись времени правок. Раздел 05.</span></div>
+      <div><span>Бот в мессенджере сам становится местом, где лежат суммы и получатели.</span><span>В карточке только то, что нужно для решения. Документы и реквизиты открываются после входа. Раздел 09.</span></div>
+      <div><span>Привычка написать в чат сильнее новой кнопки.</span><span>Старый способ остаётся рабочим, а согласования в обход системы считаются отдельной метрикой. Раздел 10.</span></div>
+    </div>
+  </article>
+
+  <h3 class="h3">Приём 4 · четыре правила по мотивам заметок Карпатого<small>Открытый набор правил для ИИ-ассистентов. Его собрал участник сообщества по тем же январским заметкам, сам Карпатый его не писал. Сверху оригинал, ниже то, как правило легло на этот ответ. <a href="https://cdn.jsdelivr.net/gh/multica-ai/andrej-karpathy-skills@main/README.md" target="_blank" rel="noopener">Набор правил</a></small></h3>
   <div class="kp">
-    <div class="card"><b>Think Before Coding</b><p>Сначала думать. Допущения и вопросы стоят раньше решения, а первая неделя плана проходит без единого изменения.</p></div>
-    <div class="card"><b>Simplicity First</b><p>Сначала простое. Первый шаг собирается на том, что у вас уже есть, без новых систем.</p></div>
-    <div class="card"><b>Surgical Changes</b><p>Точечные изменения. Форма, таблица, согласования и подпись остаются на местах.</p></div>
-    <div class="card"><b>Goal-Driven Execution</b><p>От цели к проверке. Метрики и цифра «до» заданы раньше, чем начата работа.</p></div>
+    <div class="card"><b>Think Before Coding</b><i lang="en">Don't assume. Don't hide confusion. Surface tradeoffs.</i><p>Не додумываю за заказчика. Допущения записаны, развилки показаны двумя вариантами.</p></div>
+    <div class="card"><b>Simplicity First</b><i lang="en">Minimum code that solves the problem. Nothing speculative.</i><p>Первый шаг собирается на том, что у вас уже есть. Ничего «на вырост».</p></div>
+    <div class="card"><b>Surgical Changes</b><i lang="en">Touch only what you must. Clean up only your own mess.</i><p>Форма, таблица, согласования и подпись остаются на местах.</p></div>
+    <div class="card"><b>Goal-Driven Execution</b><i lang="en">Define success criteria. Loop until verified.</i><p>Метрики и цифра «до» заданы раньше, чем начата работа.</p></div>
+  </div>
+
+  <h3 class="h3">Проверка: есть ли один промпт на все случаи<small>Я слышал, что Альтман и Карпатый якобы начинают любую задачу с одного промпта, и попросил это проверить.</small></h3>
+  <div class="check">
+    <div class="y"><b>Подтверждается</b><span>Карпатый поддержал термин context engineering: важна не хитрая формулировка, а то, какой контекст получает модель. Отсюда мой подход с допущениями, ссылками и готовыми наборами правил. <a href="https://the-decoder.com/shopify-ceo-and-ex-openai-researcher-agree-that-context-engineering-beats-prompt-engineering/" target="_blank" rel="noopener">The Decoder</a></span></div>
+    <div class="y"><b>Подтверждается</b><span>Приёмы выше настоящие, у каждого есть автор и дата. Но это четыре разных приёма под разные задачи, а не одна волшебная фраза.</span></div>
+    <div class="n"><b>Не подтверждается</b><span>Что кто-то из них начинает каждую задачу с одного универсального промпта. Такого промпта я не нашёл.</span></div>
   </div>
 
   <h3 class="h3">Мои промпты</h3>
   <details class="pr" open>
-    <summary>13 реплик по этой задаче <small>расшифровка голосовых, орфография приведена в порядок, смысл не менялся</small></summary>
+    <summary>15 реплик по этой задаче <small>расшифровка голосовых, орфография приведена в порядок, смысл не менялся</small></summary>
     <ol>
       <li>Тут задача, похожая на ту, что мы сейчас делаем. Вот текст тестового. Дай своё мнение.</li>
       <li>Действительно ли нужно оставлять Google-таблицу для согласования, или можно упростить? Стоит ли вообще оставлять чат между менеджерами? Предлагать нужно как двустороннюю интеграцию: чтобы можно было оставить старое и под него сделать новое. Поищи промпты, open-source и решения сообщества, чтобы правильно поставить задачу.</li>
@@ -1103,6 +1224,8 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
       <li>Тактика: обещать меньше, но дать больше. Ответить на три вопроса из задания и приложить ссылки.</li>
       <li>Мы должны собрать свой макет под их задачу и только дополнить его тем, что уже есть у нас: у них своё задание. Нужны схемы. Используй больше навыков и напиши об этом. Playwright, ffmpeg и обработку картинок тоже укажи.</li>
       <li>Основа ответа в том, чтобы было понятно, как я мыслю.</li>
+      <li>Чем отличаются «быстрый» и «надёжный»? При запуске демо будто играет одно и то же.</li>
+      <li>Нет ли реальных примеров промптов из интернета, которые можно грамотно подстроить под этот ответ?</li>
     </ol>
   </details>
 
@@ -1131,6 +1254,8 @@ body{margin:0}img{max-width:100%}[hidden]{display:none!important}
       <h4 style="margin-top:22px">Работа с ИИ</h4>
       <ul>
         <li><a href="https://the-decoder.com/shopify-ceo-and-ex-openai-researcher-agree-that-context-engineering-beats-prompt-engineering/" target="_blank" rel="noopener">The Decoder: context engineering</a></li>
+        <li><a href="https://www.latent.space/p/o1-skill-issue" target="_blank" rel="noopener">Latent Space: анатомия промпта</a><small>цель, формат, предупреждения, контекст</small></li>
+        <li><a href="https://x.com/karpathy/status/2015883857489522876" target="_blank" rel="noopener">Карпатый: заметки о работе с ИИ-ассистентом</a><small>откуда правило про критерии вместо шагов</small></li>
         <li><a href="https://weihaoqu.github.io/learnAIDoc/wiki/karpathy-skills-claude-code/" target="_blank" rel="noopener">Разбор набора принципов по мотивам Карпатого</a></li>
       </ul>
     </div>
@@ -1242,16 +1367,23 @@ if (scene && !RM && HAS_IO) {
 var box = $('#demoBox');
 if (box) {
   var feed = $('#demoFeed'), sheet = $('#demoSheet'), logEl = $('#demoLog'), cnts = $('#demoCnts'), now = $('#demoNow'), end = $('#demoEnd');
-  var D = null, autoT = null, matchT = null;
+  var whoEl = $('#demoWho'), bank = $('#demoBank'), bankNote = $('#demoBankNote');
+  var D = null, autoT = null, matchT = null, WHOPREV = {};
+
+  /* кто что делает: шаг, тип исполнителя, подпись, пояснение */
+  var WHO = {
+    fast: [['Заявка', 'hand', 'руками', '5 полей в Google-форме'], ['Статус', 'sys', 'система', 'приходит сам в мессенджер'], ['Согласование', 'hum', 'человек решает', 'кнопкой или в таблице'], ['Платёж', 'hand', 'руками', 'реквизиты в банк-клиенте'], ['Подтверждение', 'hand', 'руками', 'кнопка и файл платёжки']],
+    solid: [['Заявка', 'sys', 'система', 'читает счёт, человек проверяет'], ['Статус', 'sys', 'система', 'приходит сам в мессенджер'], ['Согласование', 'hum', 'человек решает', 'кнопкой или в таблице'], ['Платёж', 'sys', 'система', 'готовит черновик, человек подписывает'], ['Подтверждение', 'sys', 'система', 'находит списание в выписке']]
+  };
 
   var reset = function(keep){
     clearTimeout(autoT); clearTimeout(matchT);
-    D = { variant: keep ? keep.variant : 'fast', entity: keep ? keep.entity : 'ru', step: 0, a: null, b: null, q: null, clock: 0, t0: 0, log: [], touches: 0, seen: {}, prev: {}, closedAt: null, auto: false };
+    D = { variant: keep ? keep.variant : 'fast', entity: keep ? keep.entity : 'ru', step: 0, a: null, b: null, q: null, clock: 0, t0: 0, log: [], touches: 0, fields: 0, by: null, seen: {}, prev: {}, closedAt: null, auto: false };
   };
   var E = function(){
     return D.entity === 'ru'
-      ? { no: '0412', name: 'ООО «Вектор»', what: 'рекламные услуги, счёт № 118', sum: '184 500 ₽', due: '24.11', payer: 'Сотрудник №2', ent: 'РФ', doc: 'payment_0412.pdf' }
-      : { no: '0413', name: 'PT Nusa Kreatif', what: 'продакшн, invoice INV-2211', sum: 'Rp 48 500 000', due: '25.11', payer: 'Сотрудник №3', ent: 'Индонезия', doc: 'bukti_0413.pdf' };
+      ? { no: '0412', name: 'ООО «Вектор»', what: 'рекламные услуги, счёт № 118', sum: '184 500 ₽', due: '24.11', payer: 'Сотрудник №2', ent: 'РФ', doc: 'payment_0412.pdf', inv: 'schet_118.pdf', bn: 'выписка по API', so: ['18.11', 'ООО ЛУМОРА · оплата по счёту 97', '−62 300 ₽'], sn: ['ООО ВЕКТОР · оплата по счёту 118', '−184 500 ₽'] }
+      : { no: '0413', name: 'PT Nusa Kreatif', what: 'продакшн, invoice INV-2211', sum: 'Rp 48 500 000', due: '25.11', payer: 'Сотрудник №3', ent: 'Индонезия', doc: 'bukti_0413.pdf', inv: 'INV-2211.pdf', bn: 'файл выписки раз в день', so: ['19.11', 'PT DATAMINT · INV-2087', '−Rp 12 800 000'], sn: ['PT NUSA KREATIF · INV-2211', '−Rp 48 500 000'] };
   };
   var tm = function(m){ var h = Math.floor(m / 60), mm = m % 60; return (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm; };
   var log = function(text, sys){ D.log.push({ t: tm(D.clock), text: text, sys: !!sys }); };
@@ -1259,8 +1391,11 @@ if (box) {
 
   var submit = function(){
     if (D.step !== 0) return;
+    var solid = D.variant === 'solid';
     D.step = 1; D.clock = 602; D.t0 = 602; D.touches++;
-    log('Сотрудник №1 подал заявку' + (D.variant === 'solid' ? ': поля прочитаны из счёта' : ' через Google-форму'));
+    if (!solid) D.fields += 5;
+    log(solid ? 'Сотрудник №1 переслал счёт и проверил распознанные поля' : 'Сотрудник №1 вбил 5 полей в Google-форму и отправил');
+    if (solid) log('Счёт прочитан, дубль не найден, подрядчик есть в справочнике', true);
     log('Карточки ушли Менеджеру А и Менеджеру Б одновременно', true);
   };
   var approve = function(w, via){
@@ -1280,21 +1415,25 @@ if (box) {
   var match = function(){
     if (D.step !== 3) return;
     var e = E();
-    D.clock = D.entity === 'ru' ? 964 : 1050; D.step = 4; D.closedAt = D.clock;
+    D.clock = D.entity === 'ru' ? 964 : 1050; D.step = 4; D.closedAt = D.clock; D.by = 'банк';
     log(D.entity === 'ru' ? 'Выписка по API: найдено списание ' + e.sum + '. Заявка закрыта' : 'Файл выписки за день загружен: списание ' + e.sum + ' найдено. Заявка закрыта', true);
     log('Платёжка получена из банка и приложена к заявке', true);
   };
   var pay = function(){
     if (D.step !== 2) return;
-    var e = E(); D.touches++;
+    var e = E();
     if (D.variant === 'fast') {
-      D.clock = 965; D.step = 4; D.closedAt = D.clock;
-      log(e.payer + ' оплатил и приложил платёжку кнопкой');
+      D.touches += 2; D.fields += 6;
+      D.clock = 965; D.step = 4; D.closedAt = D.clock; D.by = 'человек';
+      log(e.payer + ' вбил 6 реквизитов в банк-клиенте и провёл платёж');
+      log(e.payer + ' нажал «Оплачено» и прикрепил файл платёжки');
       log('Автор и менеджеры получили «Оплачено» с документом', true);
     } else {
+      D.touches++;
       D.clock = 960; D.step = 3;
-      log(e.payer + ' подписал платёж в банке. Черновик подготовила система');
-      matchT = setTimeout(function(){ match(); render(); }, RM ? 400 : 1700);
+      log('Черновик платёжки создан в банке из заявки', true);
+      log(e.payer + ' подписал пачку платежей в банке');
+      matchT = setTimeout(function(){ match(); render(); }, RM ? 400 : 1900);
     }
   };
 
@@ -1314,15 +1453,23 @@ if (box) {
   var btn = function(act, label, cls, pulse){ return '<button type="button" class="btn btn-sm ' + (cls || '') + (pulse ? ' pulse' : '') + '" data-act="' + act + '">' + label + '</button>'; };
   var card = function(k, to, body, mine){ return '<div class="bc' + (mine ? ' mine' : '') + '" data-k="' + k + '"><p class="bc-to">Кому: <b>' + to + '</b></p>' + body + '</div>'; };
   var okl = function(t){ return '<p class="okl"><svg><use href="#i-check"/></svg>' + t + '</p>'; };
+  var chk = function(items){ return '<ul class="chk">' + items.map(function(t){ return '<li><svg><use href="#i-check"/></svg>' + t + '</li>'; }).join('') + '</ul>'; };
 
   var feedHTML = function(){
     var s = D.step, e = E(), solid = D.variant === 'solid', h = '';
     if (s === 0) {
-      var fields = '<dl class="fields"><dt>Контрагент</dt><dd>' + e.name + '</dd><dt>За что</dt><dd>' + e.what + '</dd><dt>Сумма</dt><dd>' + e.sum + '</dd><dt>Юрлицо</dt><dd>' + e.ent + '</dd><dt>Оплатить до</dt><dd>' + e.due + '</dd></dl>';
-      return card('new-' + D.variant + D.entity, 'Сотрудник №1',
-        '<h5>Новая заявка на оплату</h5><p class="meta">' + (solid ? 'Переслал счёт боту. Поля прочитаны из документа, остаётся проверить.' : 'Заполняет Google-форму, как привык. Ничего нового учить не нужно.') + '</p>'
-        + (solid ? '<span class="read">прочитано из PDF</span>' : '') + fields
-        + '<div class="bc-btns">' + btn('submit', solid ? 'Всё верно, отправить' : 'Отправить форму', 'btn-acc', true) + '</div>', true);
+      var rows = [['Контрагент', e.name], ['За что', e.what], ['Сумма', e.sum], ['Юрлицо', e.ent], ['Оплатить до', e.due]];
+      if (solid) return card('new-solid-' + D.entity, 'Сотрудник №1',
+        '<h5>Новая заявка на оплату</h5><p class="meta">Переслал счёт боту. Вбивать ничего не нужно: поля прочитаны из документа, остаётся проверить.</p>'
+        + '<span class="file"><svg><use href="#i-doc"/></svg>' + e.inv + '</span> <span class="read">прочитано само</span>'
+        + '<dl class="fields">' + rows.map(function(r){ return '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>'; }).join('') + '</dl>'
+        + chk(['такой счёт ещё не оплачивали', 'подрядчик есть в справочнике'])
+        + '<div class="bc-btns">' + btn('submit', 'Всё верно, отправить', 'btn-acc', true) + '</div>', true);
+      return card('new-fast-' + D.entity, 'Сотрудник №1',
+        '<h5>Новая заявка на оплату</h5><p class="meta">Заполняет Google-форму, как привык. Все поля переписывает из счёта сам.</p>'
+        + '<div class="gform">' + rows.map(function(r){ return '<div>' + r[0] + '<span>' + r[1] + '</span></div>'; }).join('') + '</div>'
+        + '<p class="hand-n">5 полей вручную</p>'
+        + '<div class="bc-btns">' + btn('submit', 'Отправить форму', 'btn-acc', true) + '</div>', true);
     }
     h += card('trk', 'Сотрудник №1', '<h5>Заявка № ' + e.no + ' · ' + e.name + '</h5><p class="meta">' + e.sum + ' · юрлицо ' + e.ent + '</p>' + trk() + '<p class="eta">' + etaText() + '</p>'
       + (D.q ? '<p class="thr">Вопрос от ' + (D.q === 'a' ? 'Менеджера А' : 'Менеджера Б') + ': «Это по действующему договору?» Ответ уходит сюда же, в карточку.</p>' : ''));
@@ -1333,13 +1480,17 @@ if (box) {
     });
     if (s === 2) {
       h += card('pay', e.payer, solid
-        ? '<h5>Черновик платёжки готов</h5><p class="meta">Реквизиты и назначение подставлены из заявки. В пачке на 16:00 ещё 5 платежей.</p><p class="sum">' + e.sum + '</p><div class="bc-btns">' + btn('pay', 'Подписать в банке', 'btn-acc', true) + '</div>'
-        : '<h5>К оплате сегодня, окно 16:00</h5><p class="meta">' + e.name + ' · согласовано 2 из 2</p><p class="sum">' + e.sum + '</p><div class="bc-btns">' + btn('pay', 'Оплачено, приложить платёжку', 'btn-acc', true) + '</div>', true);
+        ? '<h5>Черновик платёжки уже в банке</h5><p class="meta">Вбивать ничего не нужно. В пачке на 16:00 ещё 5 платежей.</p><p class="sum">' + e.sum + '</p>'
+          + chk(['реквизиты взяты из справочника подрядчиков', 'сумма и назначение взяты из заявки'])
+          + '<div class="bc-btns">' + btn('pay', 'Подписать пачку в банке', 'btn-acc', true) + '</div>'
+        : '<h5>К оплате сегодня, окно 16:00</h5><p class="meta">' + e.name + ' · согласовано 2 из 2</p><p class="sum">' + e.sum + '</p>'
+          + '<ol class="hand"><li>открыть банк-клиент</li><li>вбить 6 реквизитов получателя и платежа</li><li>провести платёж и сохранить платёжку</li><li>прикрепить файл сюда</li></ol>'
+          + '<div class="bc-btns">' + btn('pay', 'Оплатил, прикрепляю платёжку', 'btn-acc', true) + '</div>', true);
     } else if (s > 2) {
-      h += card('pay', e.payer, okl(solid ? 'Подписано в 16:00' : 'Оплачено в ' + tm(D.closedAt) + ', платёжка приложена'));
+      h += card('pay', e.payer, okl(solid ? 'Пачка подписана в 16:00' : 'Оплачено в ' + tm(D.closedAt) + ', платёжку приложил сам'));
     }
     if (s === 3) h += card('wait', 'система', '<h5>Ищем списание в выписке</h5><p class="meta">Никому ничего нажимать не нужно.</p>');
-    if (s === 4) h += card('fin', 'все участники заявки', okl('Заявка № ' + e.no + ' оплачена') + '<p class="meta" style="margin-top:6px">' + (solid ? 'Списание найдено в выписке, документ получен из банка.' : 'Документ приложил ' + e.payer + '.') + '</p><span class="file"><svg><use href="#i-doc"/></svg>' + e.doc + '</span>');
+    if (s === 4) h += card('fin', 'все участники заявки', okl('Заявка № ' + e.no + ' оплачена') + '<p class="meta" style="margin-top:6px">' + (solid ? 'Списание найдено в выписке, документ получен из банка.' : 'Об оплате сообщил ' + e.payer + ', документ приложил он же.') + '</p><span class="file"><svg><use href="#i-doc"/></svg>' + e.doc + '</span>');
     return h;
   };
   var cell = function(k, html){ return '<td data-c="' + k + '">' + html + '</td>'; };
@@ -1357,46 +1508,55 @@ if (box) {
     }
     return h + '</tbody></table>';
   };
+  var bankHTML = function(){
+    var s = D.step, e = E();
+    if (D.variant === 'fast') return '<p class="bank-off">Банк не подключён. О том, что платёж прошёл, система узнаёт от человека: он нажимает кнопку и прикладывает файл.</p>';
+    var h = '<ul class="stm"><li class="old"><time>' + e.so[0] + '</time><span>' + e.so[1] + '</span><b>' + e.so[2] + '</b></li>';
+    if (s === 4) h += '<li data-k="stm"><time>' + tm(D.closedAt) + '</time><span>' + e.sn[0] + '</span><b>' + e.sn[1] + '</b><em><svg><use href="#i-check"/></svg>это заявка № ' + e.no + ': совпали сумма, получатель и дата</em></li>';
+    else if (s === 3) h += '<li class="wait" data-k="stmw">Платёж подписан. Ждём, когда списание появится в выписке…</li>';
+    else h += '<li class="note">Новые списания система сама сверяет с заявками.</li>';
+    return h + '</ul>';
+  };
+  var whoHTML = function(){
+    var cur = [0, 2, 3, 4, -1][D.step];
+    return WHO[D.variant].map(function(r, i){
+      return '<li data-w="' + i + '"' + (i === cur ? ' class="cur"' : '') + '><span class="s">' + (i + 1) + ' · ' + r[0] + '</span><span class="tg tg-' + r[1] + '">' + r[2] + '</span><span>' + r[3] + '</span></li>';
+    }).join('');
+  };
   var logHTML = function(){
     if (!D.log.length) return '<li class="empty">Пока пусто. Каждое действие попадёт сюда со временем.</li>';
     return D.log.map(function(l, i){ return '<li data-k="log-' + i + '"' + (l.sys ? ' class="sys"' : '') + '><time>' + l.t + '</time><span>' + l.text + '</span></li>'; }).join('');
   };
-  var dur = function(){ if (D.closedAt == null) return '—'; var m = D.closedAt - D.t0; return Math.floor(m / 60) + ' ч ' + (m % 60) + ' мин'; };
+  var dur = function(){ var m = D.closedAt - D.t0; return Math.floor(m / 60) + ' ч ' + (m % 60) + ' мин'; };
   var cntHTML = function(){
-    return '<div><b>0</b><span>вопросов «когда?» в общем чате</span></div><div><b>' + D.touches + '</b><span>нажатий людей</span></div><div><b>0</b><span>походов в таблицу за статусом</span></div><div><b>' + dur() + '</b><span>от заявки до оплаты</span></div>';
+    return '<div><b>0</b><span>вопросов «когда?» в общем чате</span></div><div><b>' + D.touches + '</b><span>ручных действий</span></div><div><b>' + D.fields + '</b><span>полей вбито руками</span></div><div><b>' + (D.by || '—') + '</b><span>оплату подтвердил</span></div>';
   };
   var nowHTML = function(){
-    var s = D.step, e = E();
-    if (s === 0) return 'Сейчас ход: <b>Сотрудник №1</b>. Нажмите кнопку в окне мессенджера.';
+    var s = D.step, e = E(), solid = D.variant === 'solid';
+    if (s === 0) return 'Сейчас ход: <b>Сотрудник №1</b>. ' + (solid ? 'Счёт уже прочитан, осталось проверить и отправить.' : 'Он вбивает заявку в форму. Нажмите кнопку в окне мессенджера.');
     if (s === 1) return 'Сейчас ход: <b>' + (!D.a && !D.b ? 'Менеджер А и Менеджер Б' : !D.a ? 'Менеджер А' : 'Менеджер Б') + '</b>. Согласуйте кнопкой в боте или прямо в таблице: связь двусторонняя.';
-    if (s === 2) return 'Сейчас ход: <b>' + e.payer + '</b>. ' + (D.variant === 'solid' ? 'Черновик платёжки уже готов, осталось подписать.' : 'Оплатите и подтвердите одной кнопкой.');
-    if (s === 3) return 'Сейчас ход: <b>система</b>. Она сама найдёт списание в выписке.';
-    return 'Заявка закрыта. Можно сыграть другой вариант или другое юрлицо.';
+    if (s === 2) return 'Сейчас ход: <b>' + e.payer + '</b>. ' + (solid ? 'Черновик платёжки уже в банке, осталось подписать.' : 'Платёж он проводит в банке сам и сам сообщает об оплате.');
+    if (s === 3) return 'Сейчас ход: <b>система</b>. Она сама найдёт списание в выписке банка.';
+    return 'Заявка закрыта. Сравните со вторым вариантом: кнопка ниже.';
   };
-  var endText = function(){
-    var e = E();
-    return 'Заявка № ' + e.no + ' прошла путь от подачи до оплаты. В общий чат не написано ни одного сообщения, в таблицу за статусом никто не заходил. '
-      + (D.variant === 'solid' ? 'Оплату подтвердила выписка банка, а не человек.' : 'Оплату подтвердил плательщик одной кнопкой. В надёжном варианте это делает выписка банка.');
+  var endHTML = function(){
+    var e = E(), solid = D.variant === 'solid';
+    return '<p>Заявка № ' + e.no + ' оплачена, от подачи до оплаты условно ' + dur() + '. В общий чат не написано ни одного сообщения. '
+      + (solid ? 'Руками не вбито ни одного поля: счёт прочитан, платёжка подготовлена, оплату подтвердила выписка банка. Люди проверили, согласовали и подписали.'
+               : 'Но руками вбито ' + D.fields + ' полей, и о том, что платёж прошёл, сообщил человек.') + '</p>'
+      + '<button type="button" class="btn btn-sm" data-act="other">' + (solid ? 'Сравнить с быстрым вариантом' : 'Показать то же в надёжном варианте') + '</button>';
   };
 
   var render = function(){
-    feed.innerHTML = feedHTML(); sheet.innerHTML = sheetHTML(); logEl.innerHTML = logHTML(); cnts.innerHTML = cntHTML(); now.innerHTML = nowHTML();
-    end.hidden = D.step !== 4; if (D.step === 4) end.textContent = endText();
+    var e = E();
+    feed.innerHTML = feedHTML(); sheet.innerHTML = sheetHTML(); bank.innerHTML = bankHTML(); logEl.innerHTML = logHTML(); cnts.innerHTML = cntHTML(); now.innerHTML = nowHTML(); whoEl.innerHTML = whoHTML();
+    bankNote.textContent = D.variant === 'fast' ? 'не подключён' : e.bn;
+    end.hidden = D.step !== 4; end.innerHTML = D.step === 4 ? endHTML() : '';
     $$('[data-k]', box).forEach(function(n){ var k = n.getAttribute('data-k'); if (!D.seen[k]) { D.seen[k] = 1; n.classList.add('in'); } });
     $$('td[data-c]', sheet).forEach(function(td){ var k = td.getAttribute('data-c'), v = td.textContent; if (D.prev[k] !== undefined && D.prev[k] !== v) td.classList.add('flash'); D.prev[k] = v; });
+    $$('[data-w]', whoEl).forEach(function(li){ var k = li.getAttribute('data-w'), v = li.textContent; if (WHOPREV[k] !== undefined && WHOPREV[k] !== v) li.classList.add('flash'); WHOPREV[k] = v; });
     logEl.scrollTop = logEl.scrollHeight;
     $$('[data-set]', box).forEach(function(b){ var p = b.getAttribute('data-set').split(':'); b.setAttribute('aria-pressed', String(D[p[0]] === p[1])); });
-  };
-  var act = function(a, manual){
-    if (manual && D.auto && a !== 'auto') { D.auto = false; clearTimeout(autoT); }
-    if (a === 'reset') { reset(D); render(); return; }
-    if (a === 'auto') { startAuto(); return; }
-    if (a === 'submit') submit();
-    else if (a === 'a-a') approve('a', 'bot'); else if (a === 'a-b') approve('b', 'bot');
-    else if (a === 's-a') approve('a', 'sheet'); else if (a === 's-b') approve('b', 'sheet');
-    else if (a === 'q-a') ask('a'); else if (a === 'q-b') ask('b');
-    else if (a === 'pay') pay();
-    render();
   };
   var startAuto = function(){
     reset({ variant: D.variant, entity: D.entity }); D.auto = true; render();
@@ -1406,8 +1566,25 @@ if (box) {
         if (!D.auto) return;
         act(seq[i++], false);
         if (i < seq.length) next(); else D.auto = false;
-      }, RM ? 600 : 1400);
+      }, RM ? 600 : 1500);
     })();
+  };
+  var act = function(a, manual){
+    if (manual && D.auto && a !== 'auto' && a !== 'other') { D.auto = false; clearTimeout(autoT); }
+    if (a === 'reset') { reset(D); render(); return; }
+    if (a === 'auto') { startAuto(); return; }
+    if (a === 'other') {
+      D.variant = D.variant === 'fast' ? 'solid' : 'fast';
+      startAuto();
+      box.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
+      return;
+    }
+    if (a === 'submit') submit();
+    else if (a === 'a-a') approve('a', 'bot'); else if (a === 'a-b') approve('b', 'bot');
+    else if (a === 's-a') approve('a', 'sheet'); else if (a === 's-b') approve('b', 'sheet');
+    else if (a === 'q-a') ask('a'); else if (a === 'q-b') ask('b');
+    else if (a === 'pay') pay();
+    render();
   };
   box.addEventListener('click', function(ev){
     var t = ev.target.closest('[data-set],[data-act]');
