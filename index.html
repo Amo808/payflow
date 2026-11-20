@@ -1,0 +1,1485 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Оплата без переписки</title>
+<meta name="description" content="Как убрать из чата вопрос «когда оплатят?» и не сломать то, что уже работает: ход мыслей, живое демо и кадры действующей системы.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Оплата без переписки">
+<meta property="og:description" content="Как убрать из чата вопрос «когда оплатят?» и не сломать то, что уже работает: ход мыслей, живое демо и кадры действующей системы.">
+<meta property="og:url" content="https://amo808.github.io/payflow/">
+<meta property="og:image" content="https://amo808.github.io/payflow/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2541B'/%3E%3Cpath d='M9 16.5l5 5 9-10' fill='none' stroke='%231B0D06' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F1F3F6;--bg2:#E7EBF0;--card:#FFFFFF;--ink:#0D1626;--ink2:#414D5C;--ink3:#667383;
+  --line:#D3D9E2;--line2:#E5E9EF;--frame:#DDE2E9;
+  --acc:#F2541B;--on-acc:#1B0D06;--acc-ink:#B4380B;--acc-soft:#FDE6DB;
+  --ok:#0C7A4D;--ok-soft:#DBF2E6;--wait:#9A5700;--wait-soft:#FBEACB;
+  --bad:#B42318;--bad-soft:#FBE2DF;--info:#1D4ED8;--info-soft:#DEE7FD;
+  --ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  --fd:'Unbounded','Onest',system-ui,sans-serif;
+  --fb:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --fm:'JetBrains Mono',ui-monospace,'SFMono-Regular',Consolas,'Liberation Mono',monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#090E17;--bg2:#0E1521;--card:#121A27;--ink:#EDF1F6;--ink2:#B5C0CD;--ink3:#8A96A6;
+    --line:#283346;--line2:#1C2636;--frame:#1A2331;
+    --acc:#FF6B35;--on-acc:#1B0D06;--acc-ink:#FF8E63;--acc-soft:#3A1D11;
+    --ok:#3DD68C;--ok-soft:#0F2D21;--wait:#F2B144;--wait-soft:#32260C;
+    --bad:#FF7B6E;--bad-soft:#3A1614;--info:#86A8FF;--info-soft:#17233F;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#090E17;--bg2:#0E1521;--card:#121A27;--ink:#EDF1F6;--ink2:#B5C0CD;--ink3:#8A96A6;
+  --line:#283346;--line2:#1C2636;--frame:#1A2331;
+  --acc:#FF6B35;--on-acc:#1B0D06;--acc-ink:#FF8E63;--acc-soft:#3A1D11;
+  --ok:#3DD68C;--ok-soft:#0F2D21;--wait:#F2B144;--wait-soft:#32260C;
+  --bad:#FF7B6E;--bad-soft:#3A1614;--info:#86A8FF;--info-soft:#17233F;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--fb);-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+.page{overflow-x:clip}
+h1,h2,h3,h4,h5,p,ol,ul,dl,figure,blockquote{margin:0}
+ol,ul{padding:0;list-style:none}
+a{color:var(--acc-ink);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--info);outline-offset:2px;border-radius:8px}
+.mono{font-family:var(--fm);font-variant-numeric:tabular-nums}
+.wrap{max-width:1120px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(56px,8vw,104px)}
+.band{background:var(--bg2)}
+.sh{margin-bottom:clamp(28px,4vw,44px);max-width:840px}
+.sn{font:500 13px/1 var(--fm);color:var(--acc-ink);letter-spacing:.06em;display:inline-block;margin-bottom:14px}
+.ans{display:inline-block;margin:0 0 14px 10px;font:500 12px/1 var(--fm);letter-spacing:.04em;padding:6px 9px;border-radius:7px;background:var(--acc);color:var(--on-acc);vertical-align:1px}
+h2{font:600 clamp(25px,3.6vw,40px)/1.12 var(--fd);letter-spacing:-.02em;text-wrap:balance}
+.sh p{margin-top:14px;color:var(--ink2);font-size:18px;max-width:68ch}
+h3{font:700 20px/1.3 var(--fb);letter-spacing:-.01em}
+.h3{margin:clamp(32px,4vw,52px) 0 16px}
+.h3 small{display:block;font:400 15.5px/1.5 var(--fb);color:var(--ink2);letter-spacing:0;margin-top:4px;max-width:70ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;min-width:0}
+.prog{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:3px;background:var(--acc);transform:scaleX(0);transform-origin:0 50%;z-index:30;pointer-events:none}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,88px) clamp(40px,6vw,72px);position:relative;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(60% 55% at 88% 0%,color-mix(in srgb,var(--acc) 17%,transparent),transparent 70%),linear-gradient(var(--line2) 1px,transparent 1px) 0 0/100% 44px;
+  -webkit-mask-image:linear-gradient(#000 35%,transparent);mask-image:linear-gradient(#000 35%,transparent)}
+.kicker{font:500 12.5px/1.5 var(--fm);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+h1{font:700 clamp(38px,7.4vw,92px)/.98 var(--fd);letter-spacing:-.035em;margin-top:18px}
+h1 em{font-style:normal;color:var(--acc-ink)}
+.lead{margin-top:22px;font-size:clamp(17px,1.7vw,20px);color:var(--ink2);max-width:64ch}
+.scene{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:clamp(28px,4vw,48px)}
+.sc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.sc-head{display:flex;align-items:center;gap:10px;font-weight:600}
+.tag{font:500 12px/1 var(--fm);letter-spacing:.04em;padding:6px 9px;border-radius:7px;border:1px solid var(--line);color:var(--ink2);white-space:nowrap}
+.tag-bad{background:var(--bad-soft);border-color:transparent;color:var(--bad)}
+.tag-ok{background:var(--ok-soft);border-color:transparent;color:var(--ok)}
+.chat{display:flex;flex-direction:column;gap:8px;flex:1}
+.msg{max-width:88%;background:var(--bg2);border-radius:14px 14px 14px 4px;padding:8px 12px;font-size:14.5px;line-height:1.4;transition:opacity .3s var(--ease-out),transform .3s var(--ease-out)}
+.msg.r{align-self:flex-end;border-radius:14px 14px 4px 14px;background:var(--info-soft)}
+.msg.hide{opacity:0;transform:translateY(8px) scale(.98)}
+.msg .who{display:block;font:500 11px/1.3 var(--fm);color:var(--ink3);margin-bottom:2px}
+.file{display:inline-flex;align-items:center;gap:6px;margin-top:6px;font:500 12px/1 var(--fm);padding:6px 8px;border-radius:8px;background:var(--card);border:1px solid var(--line)}
+.file svg{width:13px;height:13px}
+.sc-foot{font-size:14px;color:var(--ink2);border-top:1px dashed var(--line);padding-top:12px}
+.sc-foot .mono{font-weight:700;font-size:20px;margin-right:6px}
+.sc-now .sc-foot .mono{color:var(--bad)}
+.sc-next .sc-foot .mono{color:var(--ok)}
+.rq{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:16px;flex:1;display:flex;flex-direction:column;gap:6px}
+.rq-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.rq-no{font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--acc-ink)}
+.rq-ent{font-size:12.5px;color:var(--ink3)}
+.rq-name{font-weight:600}
+.rq-sum{font:700 clamp(24px,3vw,30px)/1.2 var(--fm);letter-spacing:-.02em}
+.rq-eta{margin-top:14px;font-size:14.5px;color:var(--ink2);min-height:2.9em}
+.rq-who{margin-top:auto;padding-top:6px;display:grid;gap:6px;font-size:13.5px;color:var(--ink2)}
+.rq-who li{padding:8px 11px;border-radius:10px;background:var(--card);border:1px solid var(--line2)}
+.rq-who b{color:var(--ink);font-weight:600}
+.trk{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:14px}
+.trk li{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:11.5px;line-height:1.25;color:var(--ink3);position:relative}
+.trk li::before{content:"";position:absolute;top:10px;left:-50%;width:100%;height:2px;background:var(--line);transition:background-color .3s var(--ease-out)}
+.trk li:first-child::before{display:none}
+.trk i{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:var(--card);position:relative;z-index:1;display:grid;place-items:center;transition:background-color .25s var(--ease-out),border-color .25s var(--ease-out)}
+.trk li.done{color:var(--ink2)}
+.trk li.done i{background:var(--ok);border-color:var(--ok)}
+.trk li.done i::after{content:"";width:9px;height:5px;border:2px solid var(--card);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.trk li.done::before,.trk li.now::before{background:var(--ok)}
+.trk li.now{color:var(--ink);font-weight:600}
+.trk li.now i{border-color:var(--acc);background:var(--acc-soft)}
+.trk li.now i::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--acc);opacity:0;animation:ping 1.6s var(--ease-out) infinite}
+@keyframes ping{0%{transform:scale(.7);opacity:.7}100%{transform:scale(1.25);opacity:0}}
+.route{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.route a{font:500 13.5px/1 var(--fb);padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none;transition:border-color .2s ease,background-color .2s ease}
+.route a b{font:500 11px/1 var(--fm);color:var(--acc-ink);margin-right:6px}
+
+/* short answer */
+.thesis .big{font:500 clamp(21px,2.6vw,30px)/1.32 var(--fb);letter-spacing:-.012em;max-width:31em;text-wrap:pretty}
+.thesis mark{background:linear-gradient(transparent 62%,color-mix(in srgb,var(--acc) 40%,transparent) 62%);color:inherit;padding:0 2px}
+.thesis p+p{margin-top:16px;color:var(--ink2);max-width:66ch}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px}
+.qa{display:flex;flex-direction:column;gap:10px}
+.qa .q{font:500 12px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--acc-ink)}
+.qa p{color:var(--ink2);font-size:15.5px;flex:1}
+.qa a{font-weight:600;font-size:15px;text-decoration:none}
+.promise{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:16px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card)}
+.promise>div{padding:20px 22px}
+.promise>div+div{border-left:1px dashed var(--line)}
+.promise b{font:500 12px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.promise p{margin-top:8px;font-size:15.5px}
+
+/* chain of thoughts */
+.th{display:grid;grid-template-columns:44px minmax(0,1.05fr) minmax(0,1fr);gap:8px 24px;padding:22px 0;border-top:1px solid var(--line);align-items:start}
+.th:last-child{border-bottom:1px solid var(--line)}
+.th-n{font:700 15px/1 var(--fm);color:var(--acc-ink);width:36px;height:36px;border-radius:50%;border:1.5px solid var(--acc);display:grid;place-items:center;background:var(--bg2)}
+.th blockquote{font-size:18px;line-height:1.45;font-weight:500;letter-spacing:-.005em;text-wrap:pretty}
+.th-out{color:var(--ink2);font-size:15.5px}
+.th-out span{display:block;font:500 11.5px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.th-out a{font-weight:600;white-space:nowrap}
+
+/* assumptions */
+.asm{border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden}
+.asm-r{display:grid;grid-template-columns:36px minmax(0,1.1fr) minmax(0,1fr);gap:6px 20px;padding:16px 20px;border-top:1px solid var(--line2);align-items:start;font-size:15.5px}
+.asm-r:first-child{border-top:0}
+.asm-r .n{font:500 13px/1.9 var(--fm);color:var(--ink3)}
+.asm-r .if{color:var(--ink2)}
+.asm-r .if b{font-weight:600;color:var(--ink3)}
+
+/* diagrams */
+.fig+.fig{margin-top:22px}
+.fig-h{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-weight:600;flex-wrap:wrap}
+.dia{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow-x:auto;padding:18px}
+.dia svg{display:block;min-width:780px;width:100%;height:auto}
+figcaption{margin-top:12px;font-size:14.5px;color:var(--ink2);max-width:84ch}
+.dg text{font-family:var(--fb);font-size:12.5px;fill:var(--ink)}
+.dg .t2{font-size:11px;fill:var(--ink3)}
+.dg .tb{font-weight:600}
+.dg .tl{font-size:15px;font-weight:700}
+.dg .dsh{stroke-dasharray:4 4}
+.dg .nd{fill:var(--bg);stroke:var(--line);stroke-width:1.2}
+.dg .nd-acc{fill:var(--acc-soft);stroke:var(--acc);stroke-width:1.8}
+.dg .nd-ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:1.4}
+.dg .ln{stroke:var(--ink3);stroke-width:1.4;fill:none}
+.dg .ln-bad{stroke:var(--bad);stroke-width:1.5;fill:none;stroke-dasharray:5 5}
+.dg .ln-peek{stroke:var(--ink3);stroke-width:1.3;fill:none;stroke-dasharray:1.5 5;stroke-linecap:round}
+.dg .ln-acc{stroke:var(--acc);stroke-width:1.8;fill:none}
+.dg .ln-ok{stroke:var(--ok);stroke-width:1.8;fill:none}
+.dg .flow{stroke-dasharray:5 7}
+.dg .lb{font-size:11px;fill:var(--ink2)}
+.dg .lb-bad{fill:var(--bad)}
+.dg .lb-acc{fill:var(--acc-ink)}
+.dg .lb-ok{fill:var(--ok)}
+.dg .cb{fill:var(--bad-soft)}
+.dg .bub{fill:var(--card);stroke:var(--bad);stroke-opacity:.4}
+.dg .wt{fill:var(--wait-soft);stroke:var(--wait);stroke-width:1.3}
+.dg .wt-h{stroke:var(--wait);stroke-width:1.4;fill:none;stroke-linecap:round}
+.mk{fill:var(--ink3)}.mk-bad{fill:var(--bad)}.mk-acc{fill:var(--acc)}.mk-ok{fill:var(--ok)}
+.lg{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:12px;font-size:13.5px;color:var(--ink2)}
+.lg span{display:inline-flex;align-items:center;gap:8px}
+.lg i{width:26px;height:0;border-top:2px solid var(--ink3);display:inline-block}
+.lg i.b{border-top:2px dashed var(--bad)}
+.lg i.p{border-top:2px dotted var(--ink3)}
+.lg i.a{border-top:2px dashed var(--acc)}
+.lg i.w{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--wait);background:var(--wait-soft)}
+
+/* answer 1 */
+.src{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.src .card{padding:18px;font-size:14.5px}
+.src b{display:block;font-size:15.5px;margin:12px 0 4px}
+.src p{color:var(--ink2)}
+.ico{width:34px;height:34px;border-radius:10px;background:var(--acc-soft);color:var(--acc-ink);display:grid;place-items:center}
+.ico svg{width:18px;height:18px}
+.ruler{margin-top:16px}
+.evs{display:flex;flex-wrap:wrap;gap:8px 0;align-items:center;font:500 13px/1.3 var(--fm)}
+.evs li{display:flex;align-items:center}
+.evs li+li::before{content:"";width:22px;height:0;border-top:2px dotted var(--ink3);margin:0 8px}
+.evs li span{padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.tt{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}
+.tt>div{border-left:3px solid var(--wait);padding:2px 0 2px 14px;font-size:14.5px}
+.tt b{font:700 13px/1 var(--fm);color:var(--wait)}
+.tt strong{display:block;margin:4px 0 2px;font-size:15.5px}
+.tt small{color:var(--ink3);font-size:13px;display:block;line-height:1.45}
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.roles h4{font:700 17px/1.3 var(--fb);margin-bottom:8px}
+.roles h4 small{display:block;font:500 11.5px/1 var(--fm);color:var(--ink3);letter-spacing:.05em;margin-bottom:6px;text-transform:uppercase}
+.ql li{position:relative;padding:8px 0 8px 22px;border-top:1px solid var(--line2);font-size:15.5px}
+.ql li:first-child{border-top:0}
+.ql li::before{content:"?";position:absolute;left:2px;top:8px;font:700 13px/1.9 var(--fm);color:var(--acc-ink)}
+.note{margin-top:20px;padding:16px 20px;border-left:3px solid var(--acc);background:var(--card);border-radius:0 14px 14px 0;font-size:16px}
+.note b{font-weight:600}
+
+/* demo */
+.demo{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:clamp(12px,2vw,22px);box-shadow:0 24px 70px -36px rgba(13,22,38,.45)}
+.demo-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.demo-bar .sp{flex:1}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--bg2);border-radius:12px;padding:3px;gap:2px;max-width:100%}
+.seg button{border:0;background:transparent;color:var(--ink2);font:500 14px/1.2 var(--fb);padding:9px 13px;border-radius:9px;cursor:pointer;min-height:40px;transition:background-color .2s ease,color .2s ease}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(13,22,38,.14)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:600 14.5px/1.2 var(--fb);padding:10px 14px;border-radius:11px;cursor:pointer;min-height:42px;transition:transform .14s var(--ease-out),background-color .2s ease,border-color .2s ease}
+.btn:active{transform:scale(.97)}
+.btn svg{width:16px;height:16px;flex:none}
+.btn-acc{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.btn-sm{min-height:38px;padding:8px 12px;font-size:13.5px;border-radius:10px}
+.demo-now{margin:14px 0;padding:12px 16px;border-radius:12px;background:var(--acc-soft);font-size:15.5px}
+.demo-now b{color:var(--acc-ink)}
+.demo-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:14px;align-items:start}
+.demo-col{display:grid;gap:14px;min-width:0}
+.win{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--bg);min-width:0}
+.win-h{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);font:600 13.5px/1.2 var(--fb);background:var(--card)}
+.win-h svg{width:16px;height:16px;color:var(--ink3);flex:none}
+.win-h small{margin-left:auto;font:400 12px/1.2 var(--fb);color:var(--ink3);text-align:right}
+.feed{padding:12px;display:grid;gap:10px;min-height:360px;align-content:start}
+.bc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14.5px}
+.bc.mine{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.bc-to{font:500 11px/1.3 var(--fm);letter-spacing:.05em;color:var(--ink3);text-transform:uppercase;margin-bottom:8px}
+.bc-to b{color:var(--ink);font-weight:700}
+.bc h5{font:700 15px/1.3 var(--fb)}
+.bc .meta{color:var(--ink2);font-size:13.5px;margin-top:2px}
+.bc .sum{font:700 18px/1.3 var(--fm);margin-top:6px}
+.bc-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.bc .okl{display:flex;gap:8px;align-items:center;color:var(--ok);font-weight:600;font-size:14px}
+.bc .okl svg{width:16px;height:16px;flex:none}
+.bc .thr{margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--bg2);font-size:13.5px;color:var(--ink2)}
+.bc .trk{margin-top:12px}
+.bc .eta{margin-top:12px;font-size:14px;color:var(--ink2)}
+.pulse{position:relative}
+.pulse::after{content:"";position:absolute;inset:-4px;border-radius:14px;border:2px solid var(--acc);opacity:0;animation:ping2 1.8s var(--ease-out) infinite;pointer-events:none}
+@keyframes ping2{0%{opacity:.8;transform:scale(.96)}100%{opacity:0;transform:scale(1.06)}}
+.fields{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:13.5px;margin-top:10px}
+.fields dt{color:var(--ink3)}
+.fields dd{margin:0;font-weight:500}
+.read{display:inline-block;margin-top:8px;font:500 11.5px/1 var(--fm);padding:5px 8px;border-radius:7px;background:var(--info-soft);color:var(--info)}
+.sheet-w{overflow-x:auto}
+table.sheet{border-collapse:collapse;width:100%;min-width:560px;font:400 13px/1.3 var(--fb);background:var(--card)}
+.sheet th,.sheet td{border:1px solid var(--line2);padding:7px 9px;text-align:left;white-space:nowrap;vertical-align:top}
+.sheet td small{display:block;font-size:11.5px;color:var(--ink3);margin-top:1px}
+.sheet th{background:var(--bg2);font:500 11.5px/1.3 var(--fm);color:var(--ink3);letter-spacing:.03em}
+.sheet tr.old td{color:var(--ink3)}
+.sheet td.num{font-variant-numeric:tabular-nums;text-align:right}
+.sheet td.flash,.sheet tr.in td{animation:flash 1.1s var(--ease-out)}
+@keyframes flash{from{background-color:color-mix(in srgb,var(--acc) 38%,transparent)}}
+.cellbtn{border:1px dashed var(--acc);background:transparent;cursor:pointer;display:inline-flex;gap:6px;align-items:center;padding:3px 8px;border-radius:7px;color:var(--acc-ink);font:600 13px/1.3 var(--fb)}
+.st{display:inline-flex;align-items:center;gap:6px}
+.st::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink3);flex:none}
+.st.ok::before{background:var(--ok)}
+.st.wait::before{background:var(--wait)}
+.sheet-hint{padding:9px 14px;font-size:13px;color:var(--ink2);border-top:1px solid var(--line);background:var(--card)}
+.log{padding:12px 14px;display:grid;gap:6px;font-size:13.5px;max-height:216px;min-height:120px;overflow:auto;align-content:start}
+.log li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px}
+.log time{font:500 12.5px/1.65 var(--fm);color:var(--ink3)}
+.log li.sys{color:var(--ink2)}
+.log li.sys span::before{content:"система · ";color:var(--acc-ink);font-weight:600}
+.log li.empty{display:block;color:var(--ink3)}
+.cnts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);background:var(--card)}
+.cnts div{padding:12px 14px;border-left:1px solid var(--line2)}
+.cnts div:first-child{border-left:0}
+.cnts b{display:block;font:700 21px/1.1 var(--fm)}
+.cnts span{font-size:12.5px;color:var(--ink2);line-height:1.3;display:block;margin-top:5px}
+.demo-end{margin-top:14px;padding:14px 16px;border-radius:12px;background:var(--ok-soft);font-size:15.5px}
+.demo-cap{margin-top:14px;font-size:14px;color:var(--ink3);max-width:86ch}
+
+/* answer 2 */
+.stairs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
+.stp{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px 20px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.stp:nth-child(1){margin-top:66px}.stp:nth-child(2){margin-top:44px}.stp:nth-child(3){margin-top:22px}
+.stp::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--line);transform-origin:0 50%}
+.stp.first{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.stp.first::before{background:var(--acc)}
+.stp .when{font:500 12px/1.3 var(--fm);letter-spacing:.05em;text-transform:uppercase;color:var(--ink3)}
+.stp .when em{font-style:normal;color:var(--acc-ink)}
+.stp h4{font:700 18px/1.25 var(--fb)}
+.stp p{font-size:14.5px;color:var(--ink2)}
+.stp .get{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);font-size:14px}
+.stp .get b{display:block;font:500 11px/1 var(--fm);text-transform:uppercase;letter-spacing:.06em;color:var(--ok);margin-bottom:5px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.selfq h4{font:700 17px/1.3 var(--fb);margin-bottom:8px}
+.selfq p{font-size:15.5px;color:var(--ink2)}
+.vs-w{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+table.vs{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+.vs th,.vs td{padding:14px 18px;text-align:left;vertical-align:top;border-top:1px solid var(--line2)}
+.vs thead th{border-top:0;font:700 17px/1.3 var(--fb)}
+.vs thead small{display:block;font:400 13px/1.4 var(--fb);color:var(--ink3);margin-top:2px}
+.vs tbody th{font:500 11.5px/1.6 var(--fm);color:var(--ink3);letter-spacing:.04em;text-transform:uppercase;width:150px}
+.vs td:nth-child(3),.vs thead th:nth-child(3){background:color-mix(in srgb,var(--acc) 7%,transparent)}
+.pos{margin-top:16px;padding:20px 22px;border-radius:18px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acc)}
+.pos b{font:500 11.5px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--acc-ink);display:block;margin-bottom:8px}
+.pos p+p{margin-top:10px}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden}
+.tier{padding:20px 22px;border-left:1px solid var(--line2)}
+.tier:first-child{border-left:0}
+.tier .k{font:700 12.5px/1 var(--fm);color:var(--acc-ink);letter-spacing:.04em}
+.tier h4{margin:8px 0 10px;font:700 17px/1.3 var(--fb)}
+.dots{font-size:14.5px;color:var(--ink2);display:grid;gap:6px}
+.dots li{padding-left:16px;position:relative}
+.dots li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--ink3)}
+.seam{margin-top:12px;font-size:15px;color:var(--ink2);display:flex;gap:10px;align-items:flex-start}
+.seam svg{width:18px;height:18px;color:var(--acc-ink);flex:none;margin-top:3px}
+.li li{padding:10px 0 10px 28px;position:relative;border-top:1px solid var(--line2);font-size:15.5px}
+.li li:first-child{border-top:0}
+.li li svg{position:absolute;left:0;top:13px;width:17px;height:17px;color:var(--ink3)}
+.li li b{font-weight:600}
+.keep .li li svg{color:var(--ok)}
+.card>h4{font:700 17px/1.3 var(--fb);margin-bottom:8px}
+
+/* privacy */
+.cipher-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.cipher-top span{font-size:14.5px;color:var(--ink2)}
+.ct-w{overflow-x:auto}
+table.ct{width:100%;border-collapse:collapse;font-size:14.5px;min-width:440px}
+.ct th{font:500 11.5px/1 var(--fm);color:var(--ink3);text-align:left;padding:8px 10px;letter-spacing:.04em;text-transform:uppercase}
+.ct td{padding:11px 10px;border-top:1px solid var(--line2);font-family:var(--fm);font-size:13.5px;white-space:nowrap}
+.ct td:last-child,.ct th:last-child{text-align:right}
+.cmp{position:relative;overflow:hidden;background:#fff;touch-action:pan-y;-webkit-user-select:none;user-select:none;--p:52%;aspect-ratio:1600/936}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.cmp .top{clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.cmp .bar{position:absolute;top:0;bottom:0;left:var(--p);width:2px;background:var(--acc);margin-left:-1px;pointer-events:none}
+.cmp .knob{position:absolute;top:50%;left:var(--p);width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:var(--acc);color:var(--on-acc);display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.28);pointer-events:none}
+.cmp .knob svg{width:18px;height:18px}
+.cmp .lab{position:absolute;bottom:10px;font:500 11.5px/1 var(--fm);padding:7px 9px;border-radius:7px;background:rgba(13,22,38,.84);color:#fff;pointer-events:none}
+.cmp .lab.l{left:10px}.cmp .lab.r{right:10px}
+.cmp input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:ew-resize;touch-action:pan-y}
+.cmp:has(input:focus-visible) .knob{outline:3px solid var(--info);outline-offset:2px}
+
+/* metrics */
+.mx{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.mx .card{grid-column:span 2}
+.mx .card.w{grid-column:span 3}
+.mx .k{font:500 11.5px/1 var(--fm);color:var(--ink3);letter-spacing:.05em;text-transform:uppercase}
+.mx h4{margin:10px 0 6px;font:700 18px/1.25 var(--fb)}
+.mx p{font-size:14.5px;color:var(--ink2)}
+.mx .goal{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:14px}
+.mx .goal b{font:700 11px/1 var(--fm);color:var(--ok);text-transform:uppercase;letter-spacing:.06em;margin-right:8px}
+
+/* proof */
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden}
+.facts div{padding:20px;border-left:1px solid var(--line2)}
+.facts div:first-child{border-left:0}
+.facts b{display:block;font:700 clamp(24px,3vw,34px)/1 var(--fd);letter-spacing:-.03em}
+.facts span{display:block;margin-top:10px;font-size:14px;color:var(--ink2);line-height:1.4}
+.feat{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(18px,3vw,44px);align-items:center;margin-top:clamp(32px,5vw,64px)}
+.feat.rev{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+.feat.rev .frame{order:2}
+.frame{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--frame);box-shadow:0 26px 60px -36px rgba(13,22,38,.55);min-width:0}
+.frame-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;font:500 11.5px/1 var(--fm);color:var(--ink3)}
+.frame-bar i{width:9px;height:9px;border-radius:50%;background:var(--line);flex:none}
+.frame-bar span{margin-left:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frame img,.frame video{display:block;width:100%;height:auto;background:#fff}
+.feat .kick{font:500 12px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--acc-ink)}
+.feat h3{font:600 clamp(20px,2.3vw,27px)/1.2 var(--fd);letter-spacing:-.02em;margin-top:10px}
+.feat p{margin-top:12px;color:var(--ink2)}
+.feat .dots{margin-top:12px;font-size:15px}
+.phone{max-width:250px;border-radius:26px;border:6px solid var(--ink);overflow:hidden;background:#fff;margin-inline:auto;box-shadow:0 26px 60px -36px rgba(13,22,38,.55)}
+.phone img{display:block;width:100%;height:auto}
+.honest{margin-top:clamp(28px,4vw,48px);font-size:14.5px;color:var(--ink3);max-width:86ch}
+
+/* credits */
+.cred{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cred .card p{font-size:15px;color:var(--ink2)}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.tools span{font:500 12.5px/1 var(--fm);padding:7px 9px;border-radius:8px;background:var(--bg2);border:1px solid var(--line2)}
+.kp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kp .card{padding:18px}
+.kp b{font:700 12.5px/1.3 var(--fm);color:var(--acc-ink);display:block}
+.kp p{font-size:14.5px;margin-top:8px;color:var(--ink2)}
+.check{display:grid;gap:0;border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden}
+.check div{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 18px;padding:14px 20px;border-top:1px solid var(--line2);font-size:15px}
+.check div:first-child{border-top:0}
+.check b{font:500 11.5px/1.7 var(--fm);letter-spacing:.05em;text-transform:uppercase}
+.check .y b{color:var(--ok)}.check .n b{color:var(--bad)}
+details.pr{border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden}
+details.pr summary{cursor:pointer;padding:18px 22px;font-weight:700;list-style:none;display:flex;align-items:center;gap:10px}
+details.pr summary::-webkit-details-marker{display:none}
+details.pr summary::after{content:"+";margin-left:auto;font:500 22px/1 var(--fm);color:var(--ink3)}
+details.pr[open] summary::after{content:"−"}
+details.pr summary small{font:400 14px/1.3 var(--fb);color:var(--ink3)}
+.pr ol{padding:0 22px 22px;display:grid;gap:10px;counter-reset:p}
+.pr li{counter-increment:p;padding:12px 14px 12px 48px;position:relative;background:var(--bg);border-radius:12px;font-size:15px}
+.pr li::before{content:counter(p,decimal-leading-zero);position:absolute;left:14px;top:13px;font:500 12.5px/1.6 var(--fm);color:var(--acc-ink)}
+
+/* links, plan */
+.lk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 36px}
+.lk h4{font:500 12px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.lk li{padding:9px 0;border-top:1px solid var(--line2);font-size:15px}
+.lk li small{display:block;color:var(--ink3);font-size:13px;margin-top:1px}
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.days .card{padding:16px}
+.days b{font:700 12px/1 var(--fm);color:var(--acc-ink);letter-spacing:.05em;text-transform:uppercase}
+.days strong{display:block;margin-top:8px;font-size:15.5px;line-height:1.3}
+.days p{margin-top:6px;font-size:14px;color:var(--ink2)}
+.fin{margin-top:clamp(28px,4vw,48px);font:500 clamp(20px,2.4vw,28px)/1.35 var(--fb);letter-spacing:-.012em;max-width:30em;text-wrap:pretty}
+.foot{padding-block:28px 40px;font-size:13.5px;color:var(--ink3);border-top:1px solid var(--line)}
+
+/* responsive */
+@media (max-width:1000px){.src{grid-template-columns:repeat(2,minmax(0,1fr))}.stairs{grid-template-columns:repeat(2,minmax(0,1fr))}.stp:nth-child(n){margin-top:0}}
+@media (max-width:900px){
+  .demo-grid,.cred,.feat,.feat.rev{grid-template-columns:minmax(0,1fr)}
+  .feat.rev .frame{order:0}
+  .tt,.kp,.days{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mx .card,.mx .card.w{grid-column:span 3}
+}
+@media (max-width:860px){
+  .g3,.two,.tiers,.roles{grid-template-columns:minmax(0,1fr)}
+  .tier{border-left:0;border-top:1px solid var(--line2)}.tier:first-child{border-top:0}
+  .th{grid-template-columns:44px minmax(0,1fr)}.th-out{grid-column:2}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}.facts div:nth-child(3){border-left:0}.facts div:nth-child(n+3){border-top:1px solid var(--line2)}
+}
+@media (max-width:760px){
+  .scene,.promise,.lk{grid-template-columns:minmax(0,1fr)}
+  .promise>div+div{border-left:0;border-top:1px dashed var(--line)}
+  .asm-r{grid-template-columns:28px minmax(0,1fr)}.asm-r .if{grid-column:2}
+  .check div{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .src,.stairs,.tt,.kp,.days{grid-template-columns:minmax(0,1fr)}
+  .mx .card,.mx .card.w{grid-column:span 6}
+  .cnts{grid-template-columns:repeat(2,minmax(0,1fr))}.cnts div:nth-child(3){border-left:0}.cnts div:nth-child(n+3){border-top:1px solid var(--line2)}
+  .th{gap:8px 14px}.th blockquote{font-size:17px}
+  .trk li{font-size:10.5px}
+}
+
+/* motion */
+@media (hover:hover) and (pointer:fine){
+  .route a:hover{border-color:var(--acc);background:var(--acc-soft)}
+  .btn:hover{border-color:var(--ink3)}
+  .btn-acc:hover{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 88%,var(--ink))}
+  .seg button:hover{color:var(--ink)}
+  .cellbtn:hover{background:var(--acc-soft)}
+}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}}
+@keyframes fade{from{opacity:0}}
+@keyframes dash{to{stroke-dashoffset:-24}}
+@keyframes dash2{to{stroke-dashoffset:-20}}
+@keyframes fill{from{transform:scaleX(0)}}
+@media (prefers-reduced-motion:no-preference){
+  :root{scroll-behavior:smooth}
+  .rv.in{animation:rise .7s var(--ease-out) both;animation-delay:calc(var(--i,0)*70ms)}
+  .bc.in,.log li.in{animation:pop .32s var(--ease-out) both}
+  .dia.live .flow{animation:dash 1.1s linear infinite}
+  .dia.live .ln-bad{animation:dash2 1.2s linear infinite}
+  .stairs.in .stp::before{background:var(--acc);animation:fill .6s var(--ease-out) both;animation-delay:calc(var(--i,0)*180ms + 200ms)}
+}
+@media (prefers-reduced-motion:reduce){
+  .trk li.now i::before,.pulse::after{animation:none}
+  .bc.in,.log li.in{animation:fade .2s ease both}
+  .msg{transition:none}
+}
+</style>
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="prog" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="mk" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="mk-bad" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-bad" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="mk-acc" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-acc" d="M0 0L10 5L0 10z"/></marker>
+    <marker id="mk-ok" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-ok" d="M0 0L10 5L0 10z"/></marker>
+    <g id="ic" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></g>
+  </defs>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></g></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></g></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h6M9.5 16h6"/></g></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4.5 4.5v4.5H9"/></g></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M4 15h16M10 4v16"/></g></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9.5L12 4l9 5.5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7.5 3v6c0 4.5-3.2 7.8-7.5 9-4.3-1.2-7.5-4.5-7.5-9V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.3"/><path d="M16.2 14.2c2.1.3 3.7 1.8 4.3 4.3"/></g></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20V11M11 20V5M17 20v-7M3 20h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-drag" viewBox="0 0 24 24"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="page" lang="ru">
+
+<header class="hero"><div class="wrap">
+  <p class="kicker">Тестовое задание · согласование и оплата счетов</p>
+  <h1>Оплата<br><em>без переписки</em></h1>
+  <p class="lead">Сейчас статус заявки носят люди: спрашивают в чате и заглядывают в таблицу. Я предлагаю, чтобы статус приходил сам, а привычные форма и таблица продолжали работать. Ниже ход мыслей, живое демо под ваш кейс и кадры из системы, которую я уже построил.</p>
+
+  <div class="scene" id="scene">
+    <div class="sc sc-now">
+      <div class="sc-head"><span class="tag tag-bad">Сейчас</span>Статус носят люди</div>
+      <div class="chat" aria-label="Пример переписки по одной заявке">
+        <div class="msg"><span class="who">Сотрудник №1</span>Заявку на «Вектор» согласовали?</div>
+        <div class="msg r"><span class="who">Менеджер А</span>Я согласовал вчера. Ждём второго</div>
+        <div class="msg"><span class="who">Сотрудник №1</span>Менеджер Б, посмотрите, пожалуйста</div>
+        <div class="msg r"><span class="who">Менеджер Б</span>Согласовал. Когда оплата?</div>
+        <div class="msg r"><span class="who">Сотрудник №2</span>Оплатил, платёжка ниже<br><span class="file"><svg><use href="#i-doc"/></svg>payment_0412.pdf</span></div>
+        <div class="msg"><span class="who">Сотрудник №1</span>Спасибо! А по индонезийской есть новости?</div>
+      </div>
+      <div class="sc-foot"><span class="mono" id="scMsgs">6</span>сообщений по одной заявке. И она не единственная</div>
+    </div>
+    <div class="sc sc-next">
+      <div class="sc-head"><span class="tag tag-ok">После</span>Статус приходит сам</div>
+      <div class="rq">
+        <div class="rq-top"><span class="mono rq-no">ЗАЯВКА № 0412</span><span class="rq-ent">юрлицо РФ</span></div>
+        <div class="rq-name">ООО «Вектор» · рекламные услуги</div>
+        <div class="rq-sum">184 500 ₽</div>
+        <ol class="trk" id="scTrk">
+          <li class="done"><i></i>Подана</li>
+          <li class="done"><i></i>Менеджер А</li>
+          <li class="done"><i></i>Менеджер Б</li>
+          <li class="done"><i></i>Оплата</li>
+          <li class="done"><i></i>Закрыта</li>
+        </ol>
+        <p class="rq-eta" id="scEta">Оплачено. Платёжка приложена из банка.</p>
+        <ul class="rq-who">
+          <li><b>Автор</b> видит срок оплаты, а не гадает</li>
+          <li><b>Менеджер</b> видит свою очередь на согласование</li>
+          <li><b>Плательщик</b> видит пачку платежей на сегодня</li>
+        </ul>
+      </div>
+      <div class="sc-foot"><span class="mono">0</span>сообщений в чате. Каждый видит статус у себя</div>
+    </div>
+  </div>
+
+  <nav class="route" aria-label="Содержание">
+    <a href="#short"><b>01</b>Короткий ответ</a>
+    <a href="#think"><b>02</b>Как я думал</a>
+    <a href="#diagnosis"><b>04</b>Диагноз</a>
+    <a href="#q1"><b>05</b>Вопрос 1</a>
+    <a href="#demo"><b>06</b>Живое демо</a>
+    <a href="#q2"><b>07</b>Вопрос 2</a>
+    <a href="#platform"><b>08</b>Одна система</a>
+    <a href="#privacy"><b>09</b>Чувствительные данные</a>
+    <a href="#q3"><b>10</b>Вопрос 3</a>
+    <a href="#proof"><b>11</b>Это уже работает</a>
+    <a href="#made"><b>12</b>Как сделан ответ и промпты</a>
+  </nav>
+</div></header>
+
+<section id="short"><div class="wrap">
+  <div class="sh"><span class="sn">01</span><h2>Короткий ответ</h2><p>Если читать только один экран, то этот.</p></div>
+  <div class="thesis">
+    <p class="big">Время теряется не на согласовании и не на оплате. Оно теряется <mark>на неизвестности</mark>: никто не знает, где заявка и когда её оплатят, поэтому люди пишут в чат и проверяют таблицу.</p>
+    <p>Получается, что люди работают почтальонами между формой, таблицей, чатом и банком. Я бы оставил людям только решения и подпись, а доставку статуса отдал системе.</p>
+  </div>
+  <div class="g3">
+    <article class="card qa rv" style="--i:0"><span class="q">Вопрос 1</span><h3>Где теряется время</h3><p>Сначала смотрю в данные, потом говорю с людьми. История правок таблицы, время в форме, выгрузка чата и выписки банка дают четыре интервала ожидания по каждой заявке. Разговоры объясняют, почему они такие.</p><a href="#q1">Вопросы и источники →</a></article>
+    <article class="card qa rv" style="--i:1"><span class="q">Вопрос 2</span><h3>Что меняю и в каком порядке</h3><p>Первым: статус приходит сам, карточка с кнопками связана с таблицей в обе стороны. Потом: оплата закрывается по выписке. Позже: лимиты по договорам и умное окно вместо формы. Не трогаю два согласования, подпись человека и раздельные юрлица.</p><a href="#q2">План и два варианта →</a></article>
+    <article class="card qa rv" style="--i:2"><span class="q">Вопрос 3</span><h3>Как пойму, что стало лучше</h3><p>Каждая смена статуса пишется со временем. Это бесплатный замер: время от заявки до оплаты, число вопросов «когда?» в чате, касаний на заявку. Базу снимаю до любых изменений.</p><a href="#q3">Метрики →</a></article>
+  </div>
+  <div class="promise">
+    <div><b>Обещаю</b><p>За первые две недели: цифру «как сейчас» и рабочий первый шаг, после которого вопрос «когда оплатят?» незачем задавать в чате.</p></div>
+    <div><b>Не обещаю заранее</b><p>Что уберу согласования или подключу банк напрямую. Это решается по цифрам первой недели и вместе с владельцем процесса.</p></div>
+  </div>
+</div></section>
+
+<section id="think" class="band"><div class="wrap">
+  <div class="sh"><span class="sn">02</span><h2>Как я думал</h2><p>Задачу я разбирал вслух: надиктовывал мысли ИИ-ассистенту, просил искать готовые решения и проверять мои идеи на реальность. Ниже мои реплики почти дословно и то, что из каждой выросло. Это и есть ход мыслей, и это же мои промпты.</p></div>
+  <ol class="chain">
+    <li class="th"><div class="th-n">1</div><blockquote>«Система, по которой у них сейчас всё работает, в корне неправильная: кому-то надо написать в чат, чтобы что-то сдвинулось. Это должно быть автоматизировано»</blockquote><p class="th-out"><span>Что из этого выросло</span>Не ускоряю переписку, а убираю её причину. Диагноз: статус живёт в головах и в чате. <a href="#diagnosis">Диагноз →</a></p></li>
+    <li class="th"><div class="th-n">2</div><blockquote>«Действительно ли нужно оставлять Google-таблицу для согласования? Стоит ли вообще оставлять чат между менеджерами?»</blockquote><p class="th-out"><span>Что из этого выросло</span>Проверил обе крайности. Таблица остаётся как привычный журнал, но «да» ставится кнопкой. Чат остаётся людям, но не для статусов. <a href="#q2">План →</a></p></li>
+    <li class="th"><div class="th-n">3</div><blockquote>«Предлагать надо как двустороннюю интеграцию: чтобы можно было оставить старое и поверх него сделать новое»</blockquote><p class="th-out"><span>Что из этого выросло</span>Бесшовная интеграция: в первый день никто не меняет привычки. Согласовал в таблице, карточка обновилась. Нажал кнопку, строка обновилась. <a href="#demo">Демо →</a></p></li>
+    <li class="th"><div class="th-n">4</div><blockquote>«Нужно два варианта: быстрый и долгий, но более надёжный. Обосновать оба. Быстрый, скорее всего, n8n. Я сам с него начинал, но сейчас уже не сторонник»</blockquote><p class="th-out"><span>Что из этого выросло</span>Быстрый вариант использую как разведку, ядро пишу кодом. Объясняю, почему и когда какой. <a href="#variants">Два варианта →</a></p></li>
+    <li class="th"><div class="th-n">5</div><blockquote>«Убрать лишнюю человеческую коммуникацию, но сделать процесс прозрачнее и нагляднее для всех сторон»</blockquote><p class="th-out"><span>Что из этого выросло</span>Меньше сообщений не значит меньше информации. Автор видит срок, менеджер видит свою очередь, плательщик видит пачку на сегодня. <a href="#demo">Демо →</a></p></li>
+    <li class="th"><div class="th-n">6</div><blockquote>«Вся эта информация чувствительная. И давать сотрудникам обсуждать деньги в чате тоже чувствительно. Я внедряю так, что сам не вижу зарплат: работаю через обезличивание»</blockquote><p class="th-out"><span>Что из этого выросло</span>Платёжки уходят из общего чата. Суммы видит роль, а не все подряд. Разработка идёт на выдуманных данных. <a href="#privacy">Данные →</a></p></li>
+    <li class="th"><div class="th-n">7</div><blockquote>«Нужно предложить один стек и одну систему для всех автоматизаций, которые будут потом, чтобы между ними была связь и везде были удобные дашборды»</blockquote><p class="th-out"><span>Что из этого выросло</span>Оплата счетов становится первым модулем, а не отдельной поделкой: общие справочники, журнал, права и дашборд. <a href="#platform">Одна система →</a></p></li>
+    <li class="th"><div class="th-n">8</div><blockquote>«У нас уже есть окно, где продумано, как всё считается. Таким окном можно заменить Google-форму»</blockquote><p class="th-out"><span>Что из этого выросло</span>Форма только собирает поля. Окно считает, подсказывает и не даёт отправить с ошибкой. Показываю на работающем примере. <a href="#proof">Кадры →</a></p></li>
+    <li class="th"><div class="th-n">9</div><blockquote>«Обещать меньше, но дать больше»</blockquote><p class="th-out"><span>Что из этого выросло</span>В плане обещан один шаг и одна цифра. Демо, схемы и кадры на этой странице идут сверх обещанного. <a href="#short">Обещание →</a></p></li>
+    <li class="th"><div class="th-n">10</div><blockquote>«Поищи готовые решения и что делает сообщество. И проверь, правда ли Альтман и Карпатый начинают любую задачу с одного промпта»</blockquote><p class="th-out"><span>Что из этого выросло</span>Нашёл шаблоны и API банков, ссылки приложил. Универсальный промпт не подтвердился, написал как есть. <a href="#made">Проверка →</a></p></li>
+  </ol>
+</div></section>
+
+<section id="assume"><div class="wrap">
+  <div class="sh"><span class="sn">03</span><h2>Допущения</h2><p>Вводных мало, поэтому фиксирую, из чего исхожу. Каждое допущение проверяется в первый день. Рядом написано, что изменится, если я ошибся.</p></div>
+  <div class="asm">
+    <div class="asm-r"><span class="n">01</span><div>Заявок 150–300 в месяц, большая часть приходится на постоянных подрядчиков.</div><div class="if"><b>Если не так:</b> при 20 заявках в месяц хватит быстрого варианта, сверка с банком не окупится.</div></div>
+    <div class="asm-r"><span class="n">02</span><div>Команда общается в одном мессенджере, где можно завести бота. Для примера беру Telegram.</div><div class="if"><b>Если не так:</b> меняется только «доставщик» карточки: другой мессенджер или почта.</div></div>
+    <div class="asm-r"><span class="n">03</span><div>Менеджеры согласуют независимо друг от друга.</div><div class="if"><b>Если не так:</b> второй получает карточку после первого. Остальное то же.</div></div>
+    <div class="asm-r"><span class="n">04</span><div>Российский банк отдаёт выписку по API или файлом, индонезийский хотя бы файлом.</div><div class="if"><b>Если не так:</b> оплату подтверждает плательщик одной кнопкой, как в быстром варианте.</div></div>
+    <div class="asm-r"><span class="n">05</span><div>Google-форма и таблица остаются: к ним привыкли, на них могут быть завязаны отчёты.</div><div class="if"><b>Если не так:</b> переход на своё окно получится быстрее.</div></div>
+    <div class="asm-r"><span class="n">06</span><div>Платёж всегда подписывает человек.</div><div class="if"><b>Это не допущение, а граница:</b> менять её я не предлагаю.</div></div>
+  </div>
+</div></section>
+
+<section id="diagnosis" class="band"><div class="wrap">
+  <div class="sh"><span class="sn">04</span><h2>Диагноз: статус носят люди</h2><p>В процессе нет места, куда можно посмотреть и увидеть правду про заявку. Поэтому правду добывают: вопросом в чат или походом в таблицу. Каждый вопрос отвлекает двоих.</p></div>
+
+  <figure class="fig">
+    <div class="fig-h"><span class="tag tag-bad">Как сейчас</span>Заявка идёт слева направо, а вокруг неё крутятся вопросы</div>
+    <div class="dia">
+      <svg class="dg" viewBox="0 0 1000 370" role="img" aria-label="Как сейчас: заявка идёт от формы в таблицу, к двум менеджерам и к плательщику. На каждом переходе она ждёт, пока её заметят. Статус люди узнают, заглядывая в таблицу и спрашивая друг друга в общем чате.">
+        <path class="ln-peek" d="M78 100V44H802V70"/>
+        <path class="ln-peek" d="M456 44V100"/>
+        <path class="ln-peek" d="M624 44V100"/>
+        <path class="ln-peek" d="M270 44V96" marker-end="url(#mk)"/>
+        <text class="lb" x="540" y="33" text-anchor="middle">все по очереди заглядывают в таблицу: нет ли чего нового</text>
+
+        <rect class="nd" x="16" y="100" width="124" height="52" rx="10"/><text class="tb" x="78" y="130" text-anchor="middle">Сотрудник №1</text>
+        <rect class="nd" x="196" y="100" width="148" height="52" rx="10"/><text class="tb" x="270" y="122" text-anchor="middle">Google-форма</text><text class="t2" x="270" y="139" text-anchor="middle">→ таблица заявок</text>
+        <rect class="nd" x="400" y="100" width="112" height="52" rx="10"/><text class="tb" x="456" y="130" text-anchor="middle">Менеджер А</text>
+        <rect class="nd" x="568" y="100" width="112" height="52" rx="10"/><text class="tb" x="624" y="130" text-anchor="middle">Менеджер Б</text>
+        <rect class="nd" x="736" y="70" width="132" height="46" rx="10"/><text class="tb" x="802" y="89" text-anchor="middle">Сотрудник №2</text><text class="t2" x="802" y="105" text-anchor="middle">платит по РФ</text>
+        <rect class="nd" x="736" y="136" width="132" height="46" rx="10"/><text class="tb" x="802" y="155" text-anchor="middle">Сотрудник №3</text><text class="t2" x="802" y="171" text-anchor="middle">платит по Индонезии</text>
+        <rect class="nd" x="916" y="100" width="68" height="52" rx="10"/><text class="tb" x="950" y="130" text-anchor="middle">Банк</text>
+
+        <path class="ln" d="M142 126H192" marker-end="url(#mk)"/>
+        <path class="ln" d="M346 126H396" marker-end="url(#mk)"/>
+        <path class="ln" d="M514 126H564" marker-end="url(#mk)"/>
+        <path class="ln" d="M682 118L732 96" marker-end="url(#mk)"/>
+        <path class="ln" d="M682 134L732 156" marker-end="url(#mk)"/>
+        <path class="ln" d="M870 96L912 116" marker-end="url(#mk)"/>
+        <path class="ln" d="M870 156L912 136" marker-end="url(#mk)"/>
+
+        <circle class="wt" cx="371" cy="104" r="9"/><path class="wt-h" d="M371 99v5.5l3.5 2"/>
+        <circle class="wt" cx="539" cy="104" r="9"/><path class="wt-h" d="M539 99v5.5l3.5 2"/>
+        <circle class="wt" cx="706" cy="126" r="9"/><path class="wt-h" d="M706 121v5.5l3.5 2"/>
+
+        <rect class="cb" x="16" y="262" width="968" height="92" rx="14"/>
+        <text class="tb" x="36" y="287">Общий чат</text><text class="t2" x="114" y="287">здесь живёт статус: спросили, вспомнили, ответили</text>
+        <rect class="bub" x="36" y="300" width="150" height="34" rx="17"/><text x="111" y="322" text-anchor="middle">«согласовали?»</text>
+        <rect class="bub" x="200" y="300" width="186" height="34" rx="17"/><text x="293" y="322" text-anchor="middle">«напомните второму»</text>
+        <rect class="bub" x="400" y="300" width="170" height="34" rx="17"/><text x="485" y="322" text-anchor="middle">«когда оплата?»</text>
+        <rect class="bub" x="584" y="300" width="170" height="34" rx="17"/><text x="669" y="322" text-anchor="middle">«оплатили уже?»</text>
+        <rect class="bub" x="768" y="300" width="196" height="34" rx="17"/><text x="866" y="322" text-anchor="middle">«скиньте платёжку»</text>
+
+        <path class="ln-bad" d="M78 157V257" marker-start="url(#mk-bad)" marker-end="url(#mk-bad)"/>
+        <path class="ln-bad" d="M456 157V257" marker-start="url(#mk-bad)" marker-end="url(#mk-bad)"/>
+        <path class="ln-bad" d="M624 157V257" marker-start="url(#mk-bad)" marker-end="url(#mk-bad)"/>
+        <path class="ln-bad" d="M802 187V257" marker-start="url(#mk-bad)" marker-end="url(#mk-bad)"/>
+        <text class="lb lb-bad" x="88" y="212">спрашивает</text>
+        <text class="lb lb-bad" x="466" y="212">напоминают</text>
+        <text class="lb lb-bad" x="634" y="212">торопят</text>
+        <text class="lb lb-bad" x="812" y="228">платёжка в чат</text>
+      </svg>
+    </div>
+    <div class="lg"><span><i></i>заявка движется</span><span><i class="w"></i>ждёт, никто не знает сколько</span><span><i class="b"></i>вопросы и ответы в чате</span><span><i class="p"></i>заглядывают в таблицу</span></div>
+    <figcaption>Сама работа занимает минуты: поставить «согласовано», провести платёж. Часы и дни уходят на ожидание между шагами, потому что о следующем шаге человеку никто не сообщает.</figcaption>
+  </figure>
+
+  <figure class="fig" style="margin-top:36px">
+    <div class="fig-h"><span class="tag tag-ok">Как должно быть</span>В центре журнал заявок. Статус к людям доставляет система</div>
+    <div class="dia">
+      <svg class="dg" viewBox="0 0 1000 410" role="img" aria-label="Как должно быть: в центре журнал заявок. Он связан с Google-формой и таблицей в обе стороны, получает оплату из выписки банка и через бота сам доставляет статус и кнопки пяти участникам. Дашборд читает тот же журнал.">
+        <rect class="nd" x="66" y="14" width="156" height="50" rx="10"/><text class="tb" x="144" y="35" text-anchor="middle">Сотрудник №1</text><text class="t2" x="144" y="52" text-anchor="middle">подаёт заявку</text>
+        <rect class="nd" x="244" y="14" width="156" height="50" rx="10"/><text class="tb" x="322" y="35" text-anchor="middle">Менеджер А</text><text class="t2" x="322" y="52" text-anchor="middle">согласует</text>
+        <rect class="nd" x="422" y="14" width="156" height="50" rx="10"/><text class="tb" x="500" y="35" text-anchor="middle">Менеджер Б</text><text class="t2" x="500" y="52" text-anchor="middle">согласует</text>
+        <rect class="nd" x="600" y="14" width="156" height="50" rx="10"/><text class="tb" x="678" y="35" text-anchor="middle">Сотрудник №2</text><text class="t2" x="678" y="52" text-anchor="middle">платит по РФ</text>
+        <rect class="nd" x="778" y="14" width="156" height="50" rx="10"/><text class="tb" x="856" y="35" text-anchor="middle">Сотрудник №3</text><text class="t2" x="856" y="52" text-anchor="middle">платит по Индонезии</text>
+
+        <path class="ln-acc flow" d="M380 126L150 69" marker-end="url(#mk-acc)"/>
+        <path class="ln-acc flow" d="M440 126L326 69" marker-end="url(#mk-acc)"/>
+        <path class="ln-acc flow" d="M500 126V69" marker-end="url(#mk-acc)"/>
+        <path class="ln-acc flow" d="M560 126L674 69" marker-end="url(#mk-acc)"/>
+        <path class="ln-acc flow" d="M620 126L850 69" marker-end="url(#mk-acc)"/>
+        <text class="lb lb-acc" x="66" y="106">статус приходит сам</text>
+        <text class="lb lb-acc" x="934" y="106" text-anchor="end">решение одной кнопкой</text>
+
+        <rect class="nd" x="330" y="126" width="340" height="52" rx="10"/><text class="tb" x="500" y="148" text-anchor="middle">Бот в мессенджере</text><text class="t2" x="500" y="165" text-anchor="middle">карточка заявки и кнопки</text>
+        <path class="ln" d="M500 183V233" marker-start="url(#mk)" marker-end="url(#mk)"/>
+        <text class="lb" x="510" y="212">события</text>
+
+        <rect class="nd-acc" x="330" y="238" width="340" height="84" rx="12"/><text class="tl" x="500" y="275" text-anchor="middle">Журнал заявок</text><text class="t2" x="500" y="296" text-anchor="middle">статус · время · чей сейчас ход</text>
+
+        <rect class="nd" x="24" y="246" width="210" height="68" rx="10"/><text class="tb" x="129" y="276" text-anchor="middle">Google-форма и таблица</text><text class="t2" x="129" y="294" text-anchor="middle">остаются как есть</text>
+        <path class="ln-ok" d="M239 280H325" marker-start="url(#mk-ok)" marker-end="url(#mk-ok)"/>
+        <text class="lb lb-ok" x="282" y="270" text-anchor="middle">в обе стороны</text>
+
+        <rect class="nd" x="766" y="246" width="210" height="68" rx="10"/><text class="tb" x="871" y="276" text-anchor="middle">Банк</text><text class="t2" x="871" y="294" text-anchor="middle">выписка или API</text>
+        <path class="ln-ok" d="M761 268H675" marker-end="url(#mk-ok)"/>
+        <text class="lb lb-ok" x="718" y="258" text-anchor="middle">оплата найдена</text>
+        <path class="ln dsh" d="M675 296H761" marker-end="url(#mk)"/>
+        <text class="lb" x="718" y="314" text-anchor="middle">черновик</text>
+
+        <path class="ln" d="M500 326V351" marker-end="url(#mk)"/>
+        <rect class="nd" x="330" y="356" width="340" height="42" rx="10"/><text class="tb" x="500" y="382" text-anchor="middle">Дашборд: сроки, очередь, просрочки</text>
+
+        <text class="t2" x="24" y="372">Общий чат остаётся людям.</text><text class="t2" x="24" y="388">Вопросов про статус в нём нет.</text>
+        <text class="t2" x="976" y="372" text-anchor="end">Платёж подписывает человек.</text><text class="t2" x="976" y="388" text-anchor="end">У системы нет доступа к деньгам.</text>
+      </svg>
+    </div>
+    <div class="lg"><span><i class="a"></i>система сама доставляет статус и кнопки</span><span><i style="border-top-color:var(--ok)"></i>данные синхронизируются</span><span><i></i>события и отчёты</span></div>
+    <figcaption>Разница одна: стрелки к людям теперь идут от системы, а не от других людей. Форма, таблица, два согласования и подпись остаются на своих местах.</figcaption>
+  </figure>
+</div></section>
+
+<section id="q1"><div class="wrap">
+  <div class="sh"><span class="sn">05</span><span class="ans">Ответ на вопрос 1</span><h2>Какие вопросы задам и куда посмотрю</h2><p>Порядок важен. Сначала данные: они не устают и не приукрашивают. Потом люди: они объясняют, почему цифры такие.</p></div>
+
+  <h3 class="h3" style="margin-top:0">Куда смотрю до разговоров<small>Всё это уже есть, ничего внедрять не нужно. Нужен только доступ на чтение.</small></h3>
+  <div class="src">
+    <div class="card rv" style="--i:0"><span class="ico"><svg><use href="#i-doc"/></svg></span><b>Время в форме</b><p>Когда заявка реально подана. Это точка отсчёта.</p></div>
+    <div class="card rv" style="--i:1"><span class="ico"><svg><use href="#i-sheet"/></svg></span><b>История правок таблицы</b><p>Кто и когда поставил каждое согласование и отметку об оплате.</p></div>
+    <div class="card rv" style="--i:2"><span class="ico"><svg><use href="#i-chat"/></svg></span><b>Выгрузка чата</b><p>Сколько сообщений на заявку, кто кого спрашивает, когда пришла платёжка.</p></div>
+    <div class="card rv" style="--i:3"><span class="ico"><svg><use href="#i-bank"/></svg></span><b>Выписки банков</b><p>Настоящее время списания. Сравниваю с временем согласования.</p></div>
+    <div class="card rv" style="--i:4"><span class="ico"><svg><use href="#i-chart"/></svg></span><b>Сама таблица</b><p>Сколько заявок, доля постоянных подрядчиков, возвраты на доработку.</p></div>
+  </div>
+
+  <div class="card ruler">
+    <h4>Что из этого собираю: четыре интервала по каждой заявке</h4>
+    <ol class="evs" aria-label="Пять событий заявки">
+      <li><span>подана</span></li><li><span>согласовал первый</span></li><li><span>согласовал второй</span></li><li><span>оплачена</span></li><li><span>подтверждение в чате</span></li>
+    </ol>
+    <div class="tt">
+      <div><b>T1</b><strong>Ждёт первого согласования</strong><small>форма → история таблицы</small></div>
+      <div><b>T2</b><strong>Ждёт второго согласования</strong><small>история таблицы</small></div>
+      <div><b>T3</b><strong>Ждёт оплаты</strong><small>история таблицы → выписка банка</small></div>
+      <div><b>T4</b><strong>Ждёт подтверждения</strong><small>выписка банка → сообщение в чате</small></div>
+    </div>
+    <p style="margin-top:18px;font-size:15px;color:var(--ink2)">Рядом два счётчика шума: сколько сообщений в чате приходится на одну заявку и сколько раз в день люди открывают таблицу, чтобы «просто проверить». Самый длинный интервал и есть место, куда бить первым.</p>
+  </div>
+
+  <h3 class="h3">Что спрошу у участников<small>По 20–30 минут с каждым. Спрашиваю про последний конкретный случай, а не «как обычно».</small></h3>
+  <div class="roles">
+    <div class="card">
+      <h4><small>Сотрудник №1 · подаёт заявки</small>Откуда вы узнаёте, что стало с заявкой</h4>
+      <ul class="ql">
+        <li>Как вы понимаете, что заявку согласовали и оплатили?</li>
+        <li>Что чаще всего возвращают на доработку и почему?</li>
+        <li>Что вы переписываете в форму руками из счёта?</li>
+        <li>Как вы продвигаете срочную оплату?</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4><small>Менеджеры · согласуют</small>Как к вам попадает заявка</h4>
+      <ul class="ql">
+        <li>Вы сами заходите в таблицу или вам пишут, что появилась заявка?</li>
+        <li>Что вы проверяете перед «да» и где берёте эту информацию?</li>
+        <li>Какую долю согласуете не глядя, потому что это постоянный подрядчик по договору?</li>
+        <li>Что происходит с заявками, когда вы в отпуске или на встречах?</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4><small>Сотрудники №2 и №3 · платят</small>Что стоит между «согласовано» и «оплачено»</h4>
+      <ul class="ql">
+        <li>Платите по мере поступления или пачками в определённое время?</li>
+        <li>Сколько реквизитов вбиваете руками? Были ошибки или дубли?</li>
+        <li>Что мешает оплатить сразу: подпись, деньги на счёте, валютный контроль?</li>
+        <li>Сколько раз в день вас просят прислать платёжку?</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4><small>Владелец процесса · руководитель или финдиректор</small>Что считать успехом</h4>
+      <ul class="ql">
+        <li>Что болит сильнее: скорость, отвлечения или риск ошибки в оплате?</li>
+        <li>Какой срок от заявки до оплаты вы считаете нормальным?</li>
+        <li>Нужен ли след для аудита: кто и когда согласовал?</li>
+        <li>Что нельзя менять ни при каких условиях?</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note"><b>Вопрос, который задам каждому:</b> «Вспомните заявку, которая шла дольше всего. Что с ней происходило по дням?» Один разобранный случай показывает больше, чем час общих слов. И одного вопроса я не задаю вообще: «что вам автоматизировать?» На него люди описывают ускоренную версию того, что уже есть.</p>
+</div></section>
+
+<section id="demo" class="band"><div class="wrap">
+  <div class="sh"><span class="sn">06</span><h2>Живое демо: одна заявка, три окна</h2><p>Это концепт под ваш кейс, он работает прямо на странице. Сыграйте за участников сами или включите автопоказ. Следите за тем, чего на экране нет: общего чата с вопросами.</p></div>
+
+  <div class="demo" id="demoBox">
+    <div class="demo-bar">
+      <div class="seg" role="group" aria-label="Вариант решения">
+        <button type="button" data-set="variant:fast" aria-pressed="true">Быстрый · на вашем стеке</button>
+        <button type="button" data-set="variant:solid" aria-pressed="false">Надёжный · свой сервис</button>
+      </div>
+      <div class="seg" role="group" aria-label="Юрлицо">
+        <button type="button" data-set="entity:ru" aria-pressed="true">РФ</button>
+        <button type="button" data-set="entity:id" aria-pressed="false">Индонезия</button>
+      </div>
+      <span class="sp"></span>
+      <button type="button" class="btn btn-acc" data-act="auto"><svg><use href="#i-play"/></svg>Показать автоматически</button>
+      <button type="button" class="btn" data-act="reset"><svg><use href="#i-reset"/></svg>Сначала</button>
+    </div>
+    <p class="demo-now" id="demoNow" aria-live="polite">Сейчас ход: <b>Сотрудник №1</b>. Нажмите кнопку в окне мессенджера.</p>
+
+    <div class="demo-grid">
+      <div class="win">
+        <div class="win-h"><svg><use href="#i-chat"/></svg>Мессенджер · бот заявок<small>у каждого своя лента</small></div>
+        <div class="feed" id="demoFeed">
+          <div class="bc mine"><p class="bc-to">Кому: <b>Сотрудник №1</b></p><h5>Новая заявка на оплату</h5><p class="meta">Демо запускается скриптом страницы. Если кнопок нет, включите JavaScript.</p></div>
+        </div>
+      </div>
+      <div class="demo-col">
+        <div class="win">
+          <div class="win-h"><svg><use href="#i-sheet"/></svg>Google-таблица заявок<small>та же, что сейчас</small></div>
+          <div class="sheet-w" id="demoSheet"></div>
+          <p class="sheet-hint">Согласовать можно и здесь, как раньше. Бот увидит правку и обновит карточку: связь двусторонняя.</p>
+        </div>
+        <div class="win">
+          <div class="win-h"><svg><use href="#i-log"/></svg>Журнал заявки<small>условное время сценария</small></div>
+          <ol class="log" id="demoLog"><li class="empty">Пока пусто. Каждое действие попадёт сюда со временем.</li></ol>
+          <div class="cnts" id="demoCnts">
+            <div><b>0</b><span>вопросов «когда?» в общем чате</span></div>
+            <div><b>0</b><span>нажатий людей</span></div>
+            <div><b>0</b><span>походов в таблицу за статусом</span></div>
+            <div><b>—</b><span>от заявки до оплаты</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="demo-end" id="demoEnd" hidden></p>
+  </div>
+  <p class="demo-cap">Суммы, названия и время выдуманы. В быстром варианте оплату подтверждает плательщик кнопкой. В надёжном система сама готовит черновик платёжки и сама находит списание в выписке, человек только подписывает. В обоих вариантах таблица остаётся рабочей.</p>
+</div></section>
+
+<section id="q2"><div class="wrap">
+  <div class="sh"><span class="sn">07</span><span class="ans">Ответ на вопрос 2</span><h2>Что первым, что позже, а что не трогаю</h2><p>Иду ступенями. Каждая ступень приносит пользу сама по себе и не требует следующей. Если цифры покажут, что дальше идти незачем, останавливаемся.</p></div>
+
+  <div class="stairs rv">
+    <div class="stp" style="--i:0"><span class="when">Неделя 1 · <em>до изменений</em></span><h4>Замер, ничего не меняю</h4><p>Выгружаю историю таблицы и чат, говорю с участниками, считаю четыре интервала и шум.</p><div class="get"><b>Что получаете</b>Цифру «как сейчас» и карту, где заявки ждут дольше всего.</div></div>
+    <div class="stp first" style="--i:1"><span class="when">Неделя 2 · <em>первым делом</em></span><h4>Статус приходит сам</h4><p>Бот с карточкой заявки и кнопками. Двусторонняя связь с таблицей. Напоминание, если заявка висит дольше оговорённого срока.</p><div class="get"><b>Что получаете</b>Вопрос «когда?» уходит из чата. Форма и таблица работают как раньше.</div></div>
+    <div class="stp" style="--i:2"><span class="when">Недели 3–4 · <em>сразу после</em></span><h4>Оплата закрывается сама</h4><p>Система сопоставляет выписку с заявками и сама прикладывает платёжку. Окна оплаты, например 11:00 и 16:00: автор видит, когда ждать деньги.</p><div class="get"><b>Что получаете</b>Плательщиков перестают дёргать. Платёжки уходят из общего чата.</div></div>
+    <div class="stp" style="--i:3"><span class="when">Дальше · <em>по цифрам</em></span><h4>Меньше согласований и ручного ввода</h4><p>Лимиты по договорам: в лимите без повторного «да», менеджерам только исключения. Умное окно вместо формы. Черновики платёжек в банке. Свой кабинет с дашбордом.</p><div class="get"><b>Что получаете</b>Люди касаются только исключений и подписи.</div></div>
+  </div>
+
+  <h3 class="h3">Два вопроса, которые я задал себе<small>Чтобы не автоматизировать по инерции то, что можно убрать.</small></h3>
+  <div class="two selfq">
+    <div class="card"><h4>Нужна ли таблица для согласования?</h4><p>Как место, где ставят «да», не нужна: кнопка быстрее и оставляет след, кто и когда. Как привычный журнал и источник отчётов нужна, поэтому она остаётся и заполняется сама. Жить ли ей дальше, можно будет решить, когда к новому привыкнут.</p></div>
+    <div class="card"><h4>Нужен ли чат между менеджерами?</h4><p>Для разговора по существу да: спорный подрядчик, непонятная сумма. Для статусов и платёжек нет. Это не разговор, а доставка информации, и её должна делать система. Вопрос по заявке задаётся в её карточке и остаётся в её истории.</p></div>
+  </div>
+
+  <h3 class="h3" id="variants">Два варианта и моя позиция<small>Быстрый и надёжный не конкурируют. Это разведка и основная стройка.</small></h3>
+  <div class="vs-w">
+    <table class="vs">
+      <thead><tr><th></th><th>Быстрый<small>на том, что у вас уже есть</small></th><th>Надёжный<small>небольшой свой сервис</small></th></tr></thead>
+      <tbody>
+        <tr><th>Из чего</th><td>Google-форма и таблица как есть, скрипт Apps Script, бот в мессенджере. Либо n8n с готовым шаблоном.</td><td>База заявок, журнал событий, бот, роли. Таблица синхронизируется с базой в обе стороны.</td></tr>
+        <tr><th>До пользы</th><td>Дни.</td><td>Три–пять недель до работающего ядра.</td></tr>
+        <tr><th>Где правда</th><td>В таблице. Её может случайно поправить кто угодно.</td><td>В журнале сервиса. Таблица становится зеркалом.</td></tr>
+        <tr><th>Сильное</th><td>Ничего не ломает, почти бесплатно, быстро проверяет саму идею на живых людях.</td><td>Права и обезличивание, история «кто и когда», автотесты, сверка с банком, растёт в общую систему.</td></tr>
+        <tr><th>Слабое</th><td>Логика расползается по скриптам, тестировать трудно, права грубые, сверку с банком не вытянет.</td><td>Дольше. Нужны сервер и человек, который это поддерживает.</td></tr>
+        <tr><th>Когда</th><td>Первым шагом: снять боль за неделю и получить цифры.</td><td>Когда заявок много, появляются лимиты, сверка и второй процесс рядом.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pos">
+    <b>Моя позиция по n8n</b>
+    <p>Я сам начинал с n8n и знаю, чем он хорош: собрать и показать за вечер. Для разведки это лучший инструмент. Но согласования и деньги это логика, которую нужно тестировать, хранить по версиям и разграничивать по правам. В визуальном конструкторе она через полгода превращается в клубок, который боятся трогать.</p>
+    <p>Поэтому быстрый вариант я использую как разведку на одну–две недели, а ядро пишу кодом. Быстрый шаг при этом не выбрасывается: бот и вид карточки остаются, меняется только то, что под ними.</p>
+  </div>
+
+  <h3 class="h3">Три уровня, между которыми можно переходить без остановки</h3>
+  <div class="tiers">
+    <div class="tier"><span class="k">A · НА ВАШЕМ СТЕКЕ</span><h4>Бот поверх формы и таблицы</h4><ul class="dots"><li>карточка, кнопки, напоминания</li><li>оплату подтверждает плательщик</li><li>никаких новых подписок</li></ul></div>
+    <div class="tier"><span class="k">B · ЯДРО БЕЗ СВОЕГО ИНТЕРФЕЙСА</span><h4>Сервис с журналом, люди в боте и таблице</h4><ul class="dots"><li>сверка с выпиской, окна оплаты</li><li>роли и обезличивание</li><li>лимиты по договорам</li></ul></div>
+    <div class="tier"><span class="k">C · СВОЙ КАБИНЕТ</span><h4>Окно вместо формы и дашборд</h4><ul class="dots"><li>счёт читается сам, поля проверяются</li><li>очередь оплат для плательщика</li><li>дашборд для руководителя</li></ul></div>
+  </div>
+  <p class="seam"><svg><use href="#i-arrow"/></svg><span>Это и есть бесшовная интеграция: на каждом уровне старый способ работает параллельно с новым, и между ними двусторонняя связь. Переход идёт без «с понедельника все работаем по-новому».</span></p>
+
+  <div class="two" style="margin-top:clamp(32px,4vw,52px)">
+    <div class="card">
+      <h4>Какие ресурсы предложу использовать</h4>
+      <ul class="li">
+        <li><svg><use href="#i-sheet"/></svg><b>Что уже есть.</b> Google-формы, таблицы и Apps Script, мессенджер команды, банк-клиенты обоих юрлиц.</li>
+        <li><svg><use href="#i-users"/></svg><b>Люди.</b> По 20–30 минут каждого участника в первую неделю и один владелец процесса, который утверждает правила.</li>
+        <li><svg><use href="#i-bank"/></svg><b>Банки.</b> Выписка по API там, где банк её отдаёт, и обычный файл выписки там, где не отдаёт. Примеры API в ссылках ниже.</li>
+        <li><svg><use href="#i-doc"/></svg><b>Готовое.</b> Шаблоны n8n и Activepieces для разведки, чтобы не изобретать карточку и кнопки с нуля.</li>
+        <li><svg><use href="#i-eye"/></svg><b>Позже.</b> Небольшой сервер под ядро и модель для чтения счетов. Модель читает документ, а сопоставляет и считает обычный код.</li>
+      </ul>
+    </div>
+    <div class="card keep">
+      <h4>Что не стал бы трогать</h4>
+      <ul class="li">
+        <li><svg><use href="#i-lock"/></svg><b>Два согласования.</b> Это контроль денег. Сократить их для договорных платежей можно, но это решение владельца процесса, а не моё.</li>
+        <li><svg><use href="#i-lock"/></svg><b>Подпись человека.</b> Система готовит черновик. Доступа к деньгам у неё нет.</li>
+        <li><svg><use href="#i-lock"/></svg><b>Раздельные юрлица.</b> Российские заявки идут одному плательщику, индонезийские другому.</li>
+        <li><svg><use href="#i-lock"/></svg><b>Таблицу как журнал.</b> К ней привыкли, на неё могут быть завязаны отчёты.</li>
+        <li><svg><use href="#i-lock"/></svg><b>Правило «молчание не согласие».</b> Зависшую заявку система напоминает и поднимает выше, но сама не согласует.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="platform" class="band"><div class="wrap">
+  <div class="sh"><span class="sn">08</span><h2>Одна система для всех автоматизаций</h2><p>Оплата счетов не последний процесс, который захочется упростить. Если каждый автоматизировать отдельно, через год будет пять ботов, семь таблиц и ни одной общей картины. Поэтому первый модуль я сразу ставлю на общее ядро.</p></div>
+  <figure class="fig">
+    <div class="dia">
+      <svg class="dg" viewBox="0 0 1000 430" role="img" aria-label="Общее ядро: справочники, журнал событий, права и бот. К нему подключаются модули: оплата счетов как первый, сверка платежей и документов, выплаты и компенсации, проверка подписок, договоры и лимиты, закрытие месяца. Дашборды читают общий журнал, существующие таблицы и банк синхронизируются с ядром.">
+        <path class="ln" d="M262 78L297 150" marker-start="url(#mk)" marker-end="url(#mk)"/>
+        <path class="ln" d="M738 78L703 150" marker-start="url(#mk)" marker-end="url(#mk)"/>
+        <path class="ln" d="M250 215H296" marker-start="url(#mk)" marker-end="url(#mk)"/>
+        <path class="ln" d="M750 215H704" marker-start="url(#mk)" marker-end="url(#mk)"/>
+        <path class="ln" d="M262 352L297 282" marker-start="url(#mk)" marker-end="url(#mk)"/>
+        <path class="ln" d="M738 352L703 282" marker-start="url(#mk)" marker-end="url(#mk)"/>
+        <path class="ln" d="M500 136V102" marker-end="url(#mk)"/><text class="lb" x="510" y="124">читают журнал</text>
+        <path class="ln-ok" d="M500 295V327" marker-start="url(#mk-ok)" marker-end="url(#mk-ok)"/><text class="lb lb-ok" x="510" y="316">в обе стороны</text>
+
+        <rect class="nd-acc" x="300" y="140" width="400" height="150" rx="14"/>
+        <text class="tl" x="500" y="166" text-anchor="middle">Общее ядро</text>
+        <rect class="nd" x="316" y="180" width="180" height="42" rx="8"/><text class="tb" x="406" y="198" text-anchor="middle">Справочники</text><text class="t2" x="406" y="213" text-anchor="middle">люди, роли, подрядчики</text>
+        <rect class="nd" x="504" y="180" width="180" height="42" rx="8"/><text class="tb" x="594" y="198" text-anchor="middle">Журнал событий</text><text class="t2" x="594" y="213" text-anchor="middle">кто, что и когда</text>
+        <rect class="nd" x="316" y="232" width="180" height="42" rx="8"/><text class="tb" x="406" y="250" text-anchor="middle">Права</text><text class="t2" x="406" y="265" text-anchor="middle">роли и обезличивание</text>
+        <rect class="nd" x="504" y="232" width="180" height="42" rx="8"/><text class="tb" x="594" y="250" text-anchor="middle">Бот</text><text class="t2" x="594" y="265" text-anchor="middle">статусы и напоминания</text>
+
+        <rect class="nd-acc" x="30" y="40" width="230" height="58" rx="10"/><text class="tb" x="145" y="64" text-anchor="middle">Оплата счетов</text><text class="lb lb-acc" x="145" y="82" text-anchor="middle">первый модуль для вас</text>
+        <rect class="nd" x="400" y="40" width="200" height="58" rx="10"/><text class="tb" x="500" y="64" text-anchor="middle">Дашборды</text><text class="t2" x="500" y="82" text-anchor="middle">одни цифры для всех</text>
+        <rect class="nd-ok" x="740" y="40" width="230" height="58" rx="10"/><text class="tb" x="855" y="64" text-anchor="middle">Сверка платежей и документов</text><text class="lb lb-ok" x="855" y="82" text-anchor="middle">уже работает</text>
+        <rect class="nd-ok" x="18" y="186" width="230" height="58" rx="10"/><text class="tb" x="133" y="210" text-anchor="middle">Выплаты и компенсации</text><text class="lb lb-ok" x="133" y="228" text-anchor="middle">уже работает</text>
+        <rect class="nd-ok" x="752" y="186" width="230" height="58" rx="10"/><text class="tb" x="867" y="210" text-anchor="middle">Проверка подписок</text><text class="lb lb-ok" x="867" y="228" text-anchor="middle">уже работает</text>
+        <rect class="nd" x="30" y="332" width="230" height="58" rx="10"/><text class="tb" x="145" y="356" text-anchor="middle">Договоры и лимиты</text><text class="t2" x="145" y="374" text-anchor="middle">дальше</text>
+        <rect class="nd" x="400" y="332" width="200" height="58" rx="10"/><text class="tb" x="500" y="356" text-anchor="middle">Google-таблицы и банк</text><text class="t2" x="500" y="374" text-anchor="middle">то, что у вас уже есть</text>
+        <rect class="nd" x="740" y="332" width="230" height="58" rx="10"/><text class="tb" x="855" y="356" text-anchor="middle">Закрытие месяца</text><text class="t2" x="855" y="374" text-anchor="middle">дальше</text>
+        <text class="t2" x="500" y="418" text-anchor="middle">каждая линия к ядру: модуль берёт общие справочники и права и пишет свои события в общий журнал</text>
+      </svg>
+    </div>
+    <div class="lg"><span><i class="w" style="border-color:var(--acc);background:var(--acc-soft);border-radius:4px"></i>начинаем отсюда</span><span><i class="w" style="border-color:var(--ok);background:var(--ok-soft);border-radius:4px"></i>такие модули я уже построил в действующей системе, кадры ниже</span></div>
+    <figcaption>Новый процесс подключается к тем же справочникам, правам и журналу. Поэтому он с первого дня получает статусы, напоминания и место на дашборде, а не строит их заново. Один стек, один вход, одни и те же роли.</figcaption>
+  </figure>
+</div></section>
+
+<section id="privacy"><div class="wrap">
+  <div class="sh"><span class="sn">09</span><h2>Чувствительные данные</h2><p>Заявки на оплату это суммы, получатели и условия договоров. Сейчас платёжки лежат в общем чате, и их видит каждый участник. Автоматизация должна делать с этим порядок строже, а не свободнее. Я внедряю так, что сам не вижу реальных сумм.</p></div>
+
+  <div class="mx" style="margin-bottom:16px">
+    <div class="card w"><span class="ico"><svg><use href="#i-eye"/></svg></span><h4>Сумму видит роль, а не все подряд</h4><p>Финансы видят точные суммы и получателей. Остальные, включая меня как разработчика, видят псевдоним и закрытую сумму.</p></div>
+    <div class="card w"><span class="ico"><svg><use href="#i-shield"/></svg></span><h4>Разработка на выдуманных данных</h4><p>Стенд, тесты и демо работают на придуманных подрядчиках. Реальные строки в базе закрыты от разработчика на уровне самой базы.</p></div>
+    <div class="card w"><span class="ico"><svg><use href="#i-lock"/></svg></span><h4>Платёжки не лежат в общем чате</h4><p>Документ об оплате видят участники заявки. Его не листают все, кто когда-либо был добавлен в чат.</p></div>
+    <div class="card w"><span class="ico"><svg><use href="#i-log"/></svg></span><h4>У каждого действия есть след</h4><p>Кто согласовал, кто оплатил, кто исправил. На вопрос аудитора отвечает журнал, а не раскопки в переписке.</p></div>
+  </div>
+
+  <div class="two">
+    <div class="card" id="cipher">
+      <h4>Попробуйте: один и тот же список для разных ролей</h4>
+      <div class="cipher-top">
+        <div class="seg" role="group" aria-label="Роль">
+          <button type="button" data-role="fin" aria-pressed="true">Финансы</button>
+          <button type="button" data-role="dev" aria-pressed="false">Разработчик или наблюдатель</button>
+        </div>
+      </div>
+      <div class="ct-w">
+        <table class="ct">
+          <thead><tr><th>Получатель</th><th>Назначение</th><th>Сумма</th></tr></thead>
+          <tbody>
+            <tr><td>ООО «Вектор»</td><td>Реклама, счёт № 118</td><td>184 500 ₽</td></tr>
+            <tr><td>PT Nusa Kreatif</td><td>Продакшн, INV-2211</td><td>Rp 48 500 000</td></tr>
+            <tr><td>ИП Соколов А.</td><td>Дизайн, акт № 7</td><td>62 300 ₽</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:14px;font-size:14.5px;color:var(--ink2)">Наблюдатель по-прежнему видит, сколько заявок в работе, где они стоят и сколько ждут. Этого достаточно, чтобы чинить процесс, и недостаточно, чтобы узнать чужие условия.</p>
+    </div>
+    <figure class="fig" style="margin:0">
+      <div class="frame">
+        <div class="frame-bar"><i></i><i></i><i></i><span>действующая система · демо-данные</span></div>
+        <div class="cmp" id="cmp">
+          <img src="assets/month-mask.webp" alt="Экран месяца без роли «Финансы»: суммы закрыты блоками, кнопки заменены на «Посмотреть»" loading="lazy" width="1600" height="936">
+          <img class="top" src="assets/month-fin.webp" alt="Тот же экран с ролью «Финансы»: суммы видны, доступны действия" loading="lazy" width="1600" height="936">
+          <span class="bar"></span><span class="knob"><svg><use href="#i-drag"/></svg></span>
+          <span class="lab l">роль «Финансы»</span><span class="lab r">без роли</span>
+          <input type="range" min="0" max="100" value="52" step="1" aria-label="Граница между видом с ролью «Финансы» и видом без роли">
+        </div>
+      </div>
+      <figcaption>Не макет: так это работает в системе, которую я построил. Потяните границу. Слева экран бухгалтера, справа тот же экран у разработчика: суммы закрыты, кнопки изменения заменены на «Посмотреть».</figcaption>
+    </figure>
+  </div>
+</div></section>
+
+<section id="q3" class="band"><div class="wrap">
+  <div class="sh"><span class="sn">10</span><span class="ans">Ответ на вопрос 3</span><h2>Как пойму, что стало лучше</h2><p>Каждая смена статуса записывается со временем. Значит, замер получается бесплатно и без опросов. Главное условие одно: цифру «до» снимаю раньше, чем что-то меняю. Без неё цифра «после» ничего не доказывает.</p></div>
+  <div class="mx">
+    <div class="card w rv" style="--i:0"><span class="k">Главная</span><h4>Время от заявки до оплаты</h4><p>Медиана и худшие 10% заявок, отдельно по каждому из четырёх интервалов и по каждому юрлицу. Медиана показывает обычный день, худшие 10% показывают, где болит.</p><p class="goal"><b>Цель</b>назначаем после замера, а не заранее</p></div>
+    <div class="card w rv" style="--i:1"><span class="k">Шум</span><h4>Вопросы про статус в общем чате</h4><p>Считаю по выгрузке чата до изменений и после каждого шага: сколько сообщений про статус и платёжки приходится на одну заявку.</p><p class="goal"><b>Цель</b>ноль</p></div>
+    <div class="card rv" style="--i:2"><span class="k">Труд</span><h4>Касаний человека на заявку</h4><p>Сколько раз люди что-то открывали, вбивали или пересылали ради одной заявки.</p><p class="goal"><b>Цель</b>решение и подпись</p></div>
+    <div class="card rv" style="--i:3"><span class="k">Автоматика</span><h4>Оплат закрыто по выписке</h4><p>Доля заявок, где подтверждение пришло из банка без участия человека.</p><p class="goal"><b>Цель</b>растёт от шага к шагу</p></div>
+    <div class="card rv" style="--i:4"><span class="k">Контроль</span><h4>Зависшие заявки</h4><p>Сколько заявок стоит на одном шаге дольше оговорённого срока и на каком именно.</p><p class="goal"><b>Цель</b>видны в тот же день</p></div>
+  </div>
+  <div class="two" style="margin-top:16px">
+    <div class="card keep">
+      <h4>Что не должно ухудшиться</h4>
+      <ul class="li">
+        <li><svg><use href="#i-shield"/></svg><b>Ошибочные и двойные оплаты.</b> Скорость не покупается ценой контроля. Здесь цель ноль.</li>
+        <li><svg><use href="#i-shield"/></svg><b>Возвраты на доработку.</b> Если их стало больше, значит, новая подача заявки хуже старой.</li>
+        <li><svg><use href="#i-shield"/></svg><b>Согласования в обход.</b> Если люди договариваются в личке мимо системы, она им неудобна.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Как сравниваю</h4>
+      <ul class="li">
+        <li><svg><use href="#i-check"/></svg><b>База.</b> Неделя 1: те же метрики по истории за последние месяцы.</li>
+        <li><svg><use href="#i-check"/></svg><b>После каждого шага.</b> Те же цифры, тем же способом, на одном дашборде.</li>
+        <li><svg><use href="#i-check"/></svg><b>Голос людей.</b> Через две недели один вопрос каждому: сколько раз за неделю вы спрашивали или отвечали про статус?</li>
+        <li><svg><use href="#i-check"/></svg><b>Честный стоп.</b> Если шаг не дал улучшения, сначала разбираюсь почему, а потом иду дальше.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="proof"><div class="wrap">
+  <div class="sh"><span class="sn">11</span><h2>Это уже работает</h2><p>Похожую задачу я сейчас решаю в продуктовой IT-компании: бухгалтерия, платежи нескольких банков, документы подрядчиков и выплаты сотрудникам. Ниже кадры этой системы на демо-стенде. Данные выдуманы, названия банков и компании заменены.</p></div>
+  <div class="facts">
+    <div><b>260</b><span>влитых изменений за октябрь и ноябрь 2026</span></div>
+    <div><b>33</b><span>сценария автопроверки интерфейса в браузере</span></div>
+    <div><b>4</b><span>модуля в работе: сверка, выплаты, подписки, дашборд месяца</span></div>
+    <div><b>0</b><span>реальных сумм и зарплат, которые вижу я как разработчик</span></div>
+  </div>
+
+  <div class="feat">
+    <div class="frame">
+      <div class="frame-bar"><i></i><i></i><i></i><span>окно вместо формы · запись экрана, демо-данные</span></div>
+      <video data-auto muted loop playsinline controls preload="metadata" poster="assets/invoice.webp" width="1060" height="820" aria-label="Запись экрана: сотрудник вводит оклад и чек, система считает выплату"><source src="assets/invoice.mp4" type="video/mp4"></video>
+    </div>
+    <div>
+      <span class="kick">Окно вместо формы</span>
+      <h3>Человек вводит цифру, остальное считает система</h3>
+      <p>Раньше сотрудники подавали выплаты формой и письмом, а бухгалтер пересчитывал. Теперь окно само считает оклад по рабочим дням, компенсации по чекам с курсом нацбанка и лимитами и не даёт отправить без документа.</p>
+      <ul class="dots"><li>расчёт виден по шагам, спорить не о чем</li><li>чек прикладывается фотографией</li><li>бухгалтер получает готовые суммы, а не переписку</li></ul>
+      <p style="font-size:15px"><b style="font-weight:600;color:var(--ink)">Для вашего кейса</b> это третий уровень: счёт читается сам, сумма и юрлицо проверяются до отправки.</p>
+    </div>
+  </div>
+
+  <div class="feat rev">
+    <div class="frame">
+      <div class="frame-bar"><i></i><i></i><i></i><span>очередь решений · запись экрана, демо-данные</span></div>
+      <video data-auto muted loop playsinline controls preload="metadata" poster="assets/queue.webp" width="1060" height="820" aria-label="Запись экрана: бухгалтер принимает пары платёж и счёт, которые предложила система"><source src="assets/queue.mp4" type="video/mp4"></video>
+    </div>
+    <div>
+      <span class="kick">Очередь решений</span>
+      <h3>Система предлагает, человек подтверждает</h3>
+      <p>Бухгалтер не ищет, какой документ к какому платежу. Система сама сводит пары, объясняет, почему они сошлись, и замечает повторяющиеся решения: одобрите один раз, и такие платежи будут закрываться сами.</p>
+      <ul class="dots"><li>у каждого предложения есть объяснение</li><li>спорное остаётся человеку</li><li>ручное решение система не перезаписывает</li></ul>
+      <p style="font-size:15px"><b style="font-weight:600;color:var(--ink)">Для вашего кейса</b> так закрывается оплата: система находит списание в выписке и показывает, почему считает его оплатой этой заявки.</p>
+    </div>
+  </div>
+
+  <div class="feat">
+    <div class="phone"><img src="assets/phone.webp" alt="Окно выплаты на экране телефона: итог и расчёт по строкам" loading="lazy" width="800" height="1720"></div>
+    <div>
+      <span class="kick">С телефона</span>
+      <h3>Работает там, где человек находится</h3>
+      <p>Чек фотографируют в спортзале, счёт согласуют между встречами. Если для действия нужно сесть за компьютер и открыть таблицу, действие откладывают. Поэтому каждое окно сначала проверяется на узком экране.</p>
+      <ul class="dots"><li>интерфейс рассчитан на человека, который не дружит с компьютером</li><li>спокойные статусы без светофора на весь экран</li><li>перед выкладкой автотест проходит сценарии и на телефоне, и на ноутбуке</li></ul>
+    </div>
+  </div>
+  <p class="honest">Что здесь что. Живое демо в разделе 06 это концепт под ваш кейс, я собрал его для этого ответа. Кадры и видео в этом разделе и экран в разделе 09 сняты с действующей системы на стенде с выдуманными данными. Названия компании, банков и внутренних сервисов заменены при съёмке.</p>
+</div></section>
+
+<section id="made" class="band"><div class="wrap">
+  <div class="sh"><span class="sn">12</span><h2>Как сделан этот ответ</h2><p>Вы просили приложить промпты, если использовался ИИ. Использовался, и я считаю это рабочим инструментом, а не секретом. Показываю, что делал ассистент, что делал я и какие были реплики.</p></div>
+  <div class="cred">
+    <div class="card"><h4>ИИ-ассистент</h4><p>Ассистент искал готовые решения и API банков, проверял мои идеи на реальность и собирал страницу и демо по моим репликам. Выбор решения, границы контроля и приоритеты мои. Опыт с действующей системой тоже мой.</p><div class="tools"><span>Claude Code</span><span>веб-поиск</span></div></div>
+    <div class="card"><h4>Навыки ассистента</h4><p>Вместо одного длинного промпта я подключаю готовые наборы правил под каждую часть работы: оформление страницы, схемы, дизайн-система, движение.</p><div class="tools"><span>artifact-design</span><span>artifact-diagramming</span><span>ui-ux-pro-max</span><span>animate</span></div></div>
+    <div class="card"><h4>Кадры и видео</h4><p>Ни одного ручного скриншота. Автотест открыл систему на стенде с подменёнными данными, заменил названия, прошёл сценарии и записал экран. Дальше монтаж и сжатие.</p><div class="tools"><span>Playwright</span><span>ffmpeg</span><span>Pillow</span></div></div>
+  </div>
+
+  <h3 class="h3">Про Карпатого, Альтмана и «универсальный промпт»<small>Я слышал, что они якобы начинают любую задачу с одного промпта, и попросил это проверить. Вот что нашлось.</small></h3>
+  <div class="check">
+    <div class="y"><b>Подтверждается</b><span>Андрей Карпатый поддержал термин context engineering: важна не хитрая формулировка, а то, какой контекст получает модель. Отсюда мой подход с допущениями, ссылками и готовыми наборами правил. <a href="https://the-decoder.com/shopify-ceo-and-ex-openai-researcher-agree-that-context-engineering-beats-prompt-engineering/" target="_blank" rel="noopener">The Decoder</a></span></div>
+    <div class="y"><b>Подтверждается</b><span>Существует открытый набор из четырёх принципов для ИИ-ассистентов по мотивам заметок Карпатого. Собрал его участник сообщества, а не сам Карпатый. <a href="https://cdn.jsdelivr.net/gh/multica-ai/andrej-karpathy-skills@main/README.md" target="_blank" rel="noopener">README набора</a></span></div>
+    <div class="n"><b>Не подтверждается</b><span>Что кто-то из них начинает каждую задачу с одного универсального промпта. Нашёлся только отдельный вирусный промпт, который Сэм Альтман одобрил в соцсети. <a href="https://techradar.com/computing/artificial-intelligence/new-chatgpt-prompt-goes-viral-with-sam-altmans-approval" target="_blank" rel="noopener">TechRadar</a></span></div>
+  </div>
+  <h3 class="h3">Четыре принципа из этого набора и как они легли на ответ</h3>
+  <div class="kp">
+    <div class="card"><b>Think Before Coding</b><p>Сначала думать. Допущения и вопросы стоят раньше решения, а первая неделя плана проходит без единого изменения.</p></div>
+    <div class="card"><b>Simplicity First</b><p>Сначала простое. Первый шаг собирается на том, что у вас уже есть, без новых систем.</p></div>
+    <div class="card"><b>Surgical Changes</b><p>Точечные изменения. Форма, таблица, согласования и подпись остаются на местах.</p></div>
+    <div class="card"><b>Goal-Driven Execution</b><p>От цели к проверке. Метрики и цифра «до» заданы раньше, чем начата работа.</p></div>
+  </div>
+
+  <h3 class="h3">Мои промпты</h3>
+  <details class="pr" open>
+    <summary>13 реплик по этой задаче <small>расшифровка голосовых, орфография приведена в порядок, смысл не менялся</small></summary>
+    <ol>
+      <li>Тут задача, похожая на ту, что мы сейчас делаем. Вот текст тестового. Дай своё мнение.</li>
+      <li>Действительно ли нужно оставлять Google-таблицу для согласования, или можно упростить? Стоит ли вообще оставлять чат между менеджерами? Предлагать нужно как двустороннюю интеграцию: чтобы можно было оставить старое и под него сделать новое. Поищи промпты, open-source и решения сообщества, чтобы правильно поставить задачу.</li>
+      <li>Дело не в том, чтобы предложить что-то необычное. Система, по которой у них сейчас всё работает, в корне неправильная: кому-то надо написать в чат, чтобы что-то сдвинулось. Это должно быть автоматизировано.</li>
+      <li>Я встречал информацию, как промптят Сэм Альтман и Андрей Карпатый: будто бы перед любой задачей они начинают с одного промпта. Найди и проверь.</li>
+      <li>Нужно два варианта решения: быстрый и долгий, но более надёжный. Обоснуй оба. Быстрый это, скорее всего, n8n. Я сам с него начинал, но сейчас уже не сторонник.</li>
+      <li>Нужно решение и на их стеке, и то, которое можем предложить мы, в двух видах: упрощённом и с собственным интерфейсом. Всё должно встраиваться параллельно в их текущую работу. Бесшовная интеграция.</li>
+      <li>Убрать лишнюю человеческую коммуникацию, но при этом сделать процесс прозрачнее и нагляднее для всех сторон.</li>
+      <li>Вся эта информация чувствительная. И давать сотрудникам обсуждать деньги в чате тоже чувствительно. Я внедряю так, что не вижу зарплат сотрудников: работаю через обезличивание.</li>
+      <li>У нас уже есть окно, где продумано, как всё считается: оклад, спорт, выходные, больничные. Таким окном можно заменить Google-форму. Сделай обезличенные кадры и видео.</li>
+      <li>Нужно предложить один стек и одну систему для всех автоматизаций, которые будут делаться, чтобы между ними была связь и везде были удобные дашборды.</li>
+      <li>Тактика: обещать меньше, но дать больше. Ответить на три вопроса из задания и приложить ссылки.</li>
+      <li>Мы должны собрать свой макет под их задачу и только дополнить его тем, что уже есть у нас: у них своё задание. Нужны схемы. Используй больше навыков и напиши об этом. Playwright, ffmpeg и обработку картинок тоже укажи.</li>
+      <li>Основа ответа в том, чтобы было понятно, как я мыслю.</li>
+    </ol>
+  </details>
+
+  <h3 class="h3" id="links">Ссылки из поиска<small>Возможности банковских API зависят от тарифа и типа счёта, поэтому каждую проверяю при подключении.</small></h3>
+  <div class="lk">
+    <div>
+      <h4>Готовые решения и шаблоны</h4>
+      <ul>
+        <li><a href="https://www.activepieces.com/blog/invoice-approval-workflow-template-6-options-for-2026" target="_blank" rel="noopener">Activepieces: шесть вариантов согласования счетов</a><small>обзор подходов, от формы до платформы</small></li>
+        <li><a href="https://budibase.com/approval-apps/templates/invoice-approval-software" target="_blank" rel="noopener">Budibase: шаблон согласования счетов</a><small>open-source конструктор внутренних приложений</small></li>
+        <li><a href="https://n8n.io/workflows/19224-approve-supplier-invoices-from-gmail-with-gpt-4o-mini-google-sheets-and-telegram/" target="_blank" rel="noopener">n8n: счета из почты, таблица и кнопки в Telegram</a><small>ближе всего к быстрому варианту</small></li>
+        <li><a href="https://n8n.io/workflows/14515-log-invoice-approval-decisions-from-slack-to-google-sheets/" target="_blank" rel="noopener">n8n: решения по счетам из мессенджера в таблицу</a><small>пример связи кнопки и строки</small></li>
+        <li><a href="https://n8n.io/workflows/6147-automate-income-and-expense-tracking-in-google-sheets-via-telegram/" target="_blank" rel="noopener">n8n: учёт расходов в таблице через Telegram</a></li>
+        <li><a href="https://medium.com/@mars_escobin/telegram-inline-keyboards-using-google-app-script-f0a0550fde26" target="_blank" rel="noopener">Кнопки Telegram на Apps Script</a><small>быстрый вариант вообще без сторонних сервисов</small></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Банки и выплаты</h4>
+      <ul>
+        <li><a href="https://www.tbank.ru/business/open-api/" target="_blank" rel="noopener">Т-Банк: API для бизнеса</a><small>выписки и платёжные поручения</small></li>
+        <li><a href="https://secrets.tbank.ru/lichnyj-opyt/veezy-api/" target="_blank" rel="noopener">Опыт компании, подключившей API Т-Банка</a></li>
+        <li><a href="https://developers.sber.ru/docs/ru/sber-api/specifications/payments/wh-payment" target="_blank" rel="noopener">Сбер: уведомления о платежах</a></li>
+        <li><a href="https://tochka.com/public-api/" target="_blank" rel="noopener">Точка: открытый API</a></li>
+        <li><a href="https://docs.xendit.co/docs/integration-payouts" target="_blank" rel="noopener">Xendit: выплаты в Индонезии</a><small>запасной путь, если банк не отдаёт выписку программно</small></li>
+      </ul>
+      <h4 style="margin-top:22px">Работа с ИИ</h4>
+      <ul>
+        <li><a href="https://the-decoder.com/shopify-ceo-and-ex-openai-researcher-agree-that-context-engineering-beats-prompt-engineering/" target="_blank" rel="noopener">The Decoder: context engineering</a></li>
+        <li><a href="https://weihaoqu.github.io/learnAIDoc/wiki/karpathy-skills-claude-code/" target="_blank" rel="noopener">Разбор набора принципов по мотивам Карпатого</a></li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="start"><div class="wrap">
+  <div class="sh"><span class="sn">13</span><h2>Первые пять дней</h2><p>Если начинать завтра, неделя выглядела бы так.</p></div>
+  <div class="days">
+    <div class="card rv" style="--i:0"><b>День 1</b><strong>Доступы и карта</strong><p>Чтение таблицы, выгрузка чата, знакомство с владельцем процесса. Проверяю допущения.</p></div>
+    <div class="card rv" style="--i:1"><b>День 2</b><strong>Данные</strong><p>Собираю четыре интервала и шум по истории за последние месяцы.</p></div>
+    <div class="card rv" style="--i:2"><b>День 3</b><strong>Люди</strong><p>Разговоры по 20–30 минут и разбор самых долгих заявок.</p></div>
+    <div class="card rv" style="--i:3"><b>День 4</b><strong>Картина</strong><p>Показываю цифры и одно предложение: какой шаг первый и почему.</p></div>
+    <div class="card rv" style="--i:4"><b>День 5</b><strong>Прототип</strong><p>Карточка с кнопками на трёх настоящих заявках, параллельно со старым способом.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h4>Что понадобится от вас</h4>
+    <ul class="li">
+      <li><svg><use href="#i-sheet"/></svg>Доступ на чтение к форме и таблице заявок.</li>
+      <li><svg><use href="#i-chat"/></svg>Выгрузка чата за два–три месяца.</li>
+      <li><svg><use href="#i-bank"/></svg>Выписки обоих юрлиц за тот же срок или понимание, как их получить.</li>
+      <li><svg><use href="#i-users"/></svg>По полчаса каждого участника и один человек, который принимает решения по правилам.</li>
+    </ul>
+  </div>
+  <p class="fin">Автоматизация здесь не цель. Цель в том, чтобы человек, подавший заявку, больше никогда не спрашивал, что с ней.</p>
+</div></section>
+
+<footer class="foot"><div class="wrap">Ответ на тестовое задание. Данные в демо и на кадрах выдуманы, совпадения с реальными компаниями случайны.</div></footer>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+var RM = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+var HAS_IO = 'IntersectionObserver' in window;
+function $(s, r){ return (r || document).querySelector(s); }
+function $$(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+/* полоска прогресса чтения */
+var prog = $('.prog'), tick = false;
+function onScroll(){
+  if (tick) return; tick = true;
+  requestAnimationFrame(function(){
+    var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    var top = h.scrollTop || document.body.scrollTop || 0;
+    prog.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, top / max) : 0) + ')';
+    tick = false;
+  });
+}
+addEventListener('scroll', onScroll, { passive: true });
+addEventListener('resize', onScroll, { passive: true });
+onScroll();
+
+/* появление блоков, «живые» стрелки схем, видео только в кадре */
+if (HAS_IO) {
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0 });
+  $$('.rv').forEach(function(el){ io.observe(el); });
+
+  var live = new IntersectionObserver(function(es){
+    es.forEach(function(e){ e.target.classList.toggle('live', e.isIntersecting); });
+  }, { threshold: 0.15 });
+  $$('.dia').forEach(function(el){ live.observe(el); });
+
+  var vio = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting && !RM) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+      else if (!e.isIntersecting) v.pause();
+    });
+  }, { threshold: 0.5 });
+  $$('video[data-auto]').forEach(function(v){ vio.observe(v); });
+}
+
+/* сцена в шапке: слева растёт переписка, справа заявка идёт сама */
+var scene = $('#scene');
+if (scene && !RM && HAS_IO) {
+  var msgs = $$('.msg', scene), sts = $$('#scTrk li', scene), eta = $('#scEta'), cnt = $('#scMsgs');
+  var ETA = ['Заявка принята. Карточка ушла обоим менеджерам.', 'Менеджер А согласовал. Ждём Менеджера Б.', 'Согласовано 2 из 2. Оплата сегодня в окне 16:00.', 'Платёж подписан. Ищем списание в выписке.', 'Списание найдено в выписке в 16:04.', 'Оплачено. Платёжка приложена из банка.'];
+  var DONE = [1, 2, 3, 3, 4, 5], NOW = [1, 2, 3, 3, 4, -1];
+  var f = 5, timer = null, on = false;
+  var paint = function(){
+    msgs.forEach(function(m, i){ m.classList.toggle('hide', i > f); });
+    sts.forEach(function(s, i){ s.classList.toggle('done', i < DONE[f]); s.classList.toggle('now', i === NOW[f]); });
+    eta.textContent = ETA[f]; cnt.textContent = String(f + 1);
+  };
+  var step = function(){
+    if (f >= 5) {
+      f = -1;
+      msgs.forEach(function(m){ m.classList.add('hide'); });
+      sts.forEach(function(s){ s.classList.remove('done'); s.classList.remove('now'); });
+      eta.textContent = 'Сотрудник №1 подаёт заявку.'; cnt.textContent = '0';
+      timer = setTimeout(step, 900);
+      return;
+    }
+    f++; paint();
+    timer = setTimeout(step, f === 5 ? 4200 : 1500);
+  };
+  new IntersectionObserver(function(es){
+    var v = es[0].isIntersecting;
+    if (v && !on) { on = true; timer = setTimeout(step, 2600); }
+    else if (!v && on) { on = false; clearTimeout(timer); }
+  }, { threshold: 0.25 }).observe(scene);
+}
+
+/* живое демо */
+var box = $('#demoBox');
+if (box) {
+  var feed = $('#demoFeed'), sheet = $('#demoSheet'), logEl = $('#demoLog'), cnts = $('#demoCnts'), now = $('#demoNow'), end = $('#demoEnd');
+  var D = null, autoT = null, matchT = null;
+
+  var reset = function(keep){
+    clearTimeout(autoT); clearTimeout(matchT);
+    D = { variant: keep ? keep.variant : 'fast', entity: keep ? keep.entity : 'ru', step: 0, a: null, b: null, q: null, clock: 0, t0: 0, log: [], touches: 0, seen: {}, prev: {}, closedAt: null, auto: false };
+  };
+  var E = function(){
+    return D.entity === 'ru'
+      ? { no: '0412', name: 'ООО «Вектор»', what: 'рекламные услуги, счёт № 118', sum: '184 500 ₽', due: '24.11', payer: 'Сотрудник №2', ent: 'РФ', doc: 'payment_0412.pdf' }
+      : { no: '0413', name: 'PT Nusa Kreatif', what: 'продакшн, invoice INV-2211', sum: 'Rp 48 500 000', due: '25.11', payer: 'Сотрудник №3', ent: 'Индонезия', doc: 'bukti_0413.pdf' };
+  };
+  var tm = function(m){ var h = Math.floor(m / 60), mm = m % 60; return (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm; };
+  var log = function(text, sys){ D.log.push({ t: tm(D.clock), text: text, sys: !!sys }); };
+  var who = function(w){ return w === 'a' ? 'Менеджер А' : 'Менеджер Б'; };
+
+  var submit = function(){
+    if (D.step !== 0) return;
+    D.step = 1; D.clock = 602; D.t0 = 602; D.touches++;
+    log('Сотрудник №1 подал заявку' + (D.variant === 'solid' ? ': поля прочитаны из счёта' : ' через Google-форму'));
+    log('Карточки ушли Менеджеру А и Менеджеру Б одновременно', true);
+  };
+  var approve = function(w, via){
+    if (D.step !== 1 || D[w]) return;
+    D.clock += (D.a || D.b) ? 17 : 12;
+    D[w] = { t: tm(D.clock), via: via }; D.touches++;
+    log(who(w) + ' согласовал ' + (via === 'sheet' ? 'в таблице' : 'кнопкой в боте'));
+    log(via === 'sheet' ? 'Правка в таблице замечена, карточка обновлена' : 'Строка в таблице обновилась сама', true);
+    if (D.a && D.b) { D.step = 2; log('Согласовано 2 из 2. Заявка в очереди оплаты, окно 16:00', true); }
+  };
+  var ask = function(w){
+    if (D.step !== 1 || D[w] || D.q) return;
+    D.q = w; D.clock += 3; D.touches++;
+    log(who(w) + ' задал вопрос автору в карточке заявки');
+    log('Вопрос и ответ остались в истории заявки, общий чат не тронут', true);
+  };
+  var match = function(){
+    if (D.step !== 3) return;
+    var e = E();
+    D.clock = D.entity === 'ru' ? 964 : 1050; D.step = 4; D.closedAt = D.clock;
+    log(D.entity === 'ru' ? 'Выписка по API: найдено списание ' + e.sum + '. Заявка закрыта' : 'Файл выписки за день загружен: списание ' + e.sum + ' найдено. Заявка закрыта', true);
+    log('Платёжка получена из банка и приложена к заявке', true);
+  };
+  var pay = function(){
+    if (D.step !== 2) return;
+    var e = E(); D.touches++;
+    if (D.variant === 'fast') {
+      D.clock = 965; D.step = 4; D.closedAt = D.clock;
+      log(e.payer + ' оплатил и приложил платёжку кнопкой');
+      log('Автор и менеджеры получили «Оплачено» с документом', true);
+    } else {
+      D.clock = 960; D.step = 3;
+      log(e.payer + ' подписал платёж в банке. Черновик подготовила система');
+      matchT = setTimeout(function(){ match(); render(); }, RM ? 400 : 1700);
+    }
+  };
+
+  var trk = function(){
+    var s = D.step, labels = ['Подана', 'Менеджер А', 'Менеджер Б', 'Оплата', 'Закрыта'];
+    var done = [s >= 1, !!D.a, !!D.b, s === 4, s === 4];
+    var nowv = [false, s === 1 && !D.a, s === 1 && !D.b, s === 2 || s === 3, false];
+    return '<ol class="trk">' + labels.map(function(l, i){ return '<li class="' + (done[i] ? 'done' : nowv[i] ? 'now' : '') + '"><i></i>' + l + '</li>'; }).join('') + '</ol>';
+  };
+  var etaText = function(){
+    var s = D.step, e = E();
+    if (s === 1) return D.a && !D.b ? 'Менеджер А согласовал. Ждём Менеджера Б.' : D.b && !D.a ? 'Менеджер Б согласовал. Ждём Менеджера А.' : 'Карточка у обоих менеджеров. Если зависнет дольше 4 часов, система напомнит сама.';
+    if (s === 2) return 'Согласовано 2 из 2. Оплата сегодня в окне 16:00, платит ' + e.payer + '.';
+    if (s === 3) return 'Платёж подписан в 16:00. Ждём списание в выписке.';
+    return 'Оплачено в ' + tm(D.closedAt) + '. Документ: ' + e.doc + '.';
+  };
+  var btn = function(act, label, cls, pulse){ return '<button type="button" class="btn btn-sm ' + (cls || '') + (pulse ? ' pulse' : '') + '" data-act="' + act + '">' + label + '</button>'; };
+  var card = function(k, to, body, mine){ return '<div class="bc' + (mine ? ' mine' : '') + '" data-k="' + k + '"><p class="bc-to">Кому: <b>' + to + '</b></p>' + body + '</div>'; };
+  var okl = function(t){ return '<p class="okl"><svg><use href="#i-check"/></svg>' + t + '</p>'; };
+
+  var feedHTML = function(){
+    var s = D.step, e = E(), solid = D.variant === 'solid', h = '';
+    if (s === 0) {
+      var fields = '<dl class="fields"><dt>Контрагент</dt><dd>' + e.name + '</dd><dt>За что</dt><dd>' + e.what + '</dd><dt>Сумма</dt><dd>' + e.sum + '</dd><dt>Юрлицо</dt><dd>' + e.ent + '</dd><dt>Оплатить до</dt><dd>' + e.due + '</dd></dl>';
+      return card('new-' + D.variant + D.entity, 'Сотрудник №1',
+        '<h5>Новая заявка на оплату</h5><p class="meta">' + (solid ? 'Переслал счёт боту. Поля прочитаны из документа, остаётся проверить.' : 'Заполняет Google-форму, как привык. Ничего нового учить не нужно.') + '</p>'
+        + (solid ? '<span class="read">прочитано из PDF</span>' : '') + fields
+        + '<div class="bc-btns">' + btn('submit', solid ? 'Всё верно, отправить' : 'Отправить форму', 'btn-acc', true) + '</div>', true);
+    }
+    h += card('trk', 'Сотрудник №1', '<h5>Заявка № ' + e.no + ' · ' + e.name + '</h5><p class="meta">' + e.sum + ' · юрлицо ' + e.ent + '</p>' + trk() + '<p class="eta">' + etaText() + '</p>'
+      + (D.q ? '<p class="thr">Вопрос от ' + (D.q === 'a' ? 'Менеджера А' : 'Менеджера Б') + ': «Это по действующему договору?» Ответ уходит сюда же, в карточку.</p>' : ''));
+    ['a', 'b'].forEach(function(w){
+      var r = D[w];
+      if (r) h += card('ap-' + w, who(w), okl('Согласовано в ' + r.t + (r.via === 'sheet' ? ' · в таблице' : ' · кнопкой')));
+      else h += card('ap-' + w, who(w), '<h5>Согласовать оплату</h5><p class="meta">' + e.name + ' · ' + e.sum + ' · до ' + e.due + '</p><div class="bc-btns">' + btn('a-' + w, 'Согласовать', 'btn-acc', true) + (D.q ? '' : btn('q-' + w, 'Вопрос автору')) + '</div>', true);
+    });
+    if (s === 2) {
+      h += card('pay', e.payer, solid
+        ? '<h5>Черновик платёжки готов</h5><p class="meta">Реквизиты и назначение подставлены из заявки. В пачке на 16:00 ещё 5 платежей.</p><p class="sum">' + e.sum + '</p><div class="bc-btns">' + btn('pay', 'Подписать в банке', 'btn-acc', true) + '</div>'
+        : '<h5>К оплате сегодня, окно 16:00</h5><p class="meta">' + e.name + ' · согласовано 2 из 2</p><p class="sum">' + e.sum + '</p><div class="bc-btns">' + btn('pay', 'Оплачено, приложить платёжку', 'btn-acc', true) + '</div>', true);
+    } else if (s > 2) {
+      h += card('pay', e.payer, okl(solid ? 'Подписано в 16:00' : 'Оплачено в ' + tm(D.closedAt) + ', платёжка приложена'));
+    }
+    if (s === 3) h += card('wait', 'система', '<h5>Ищем списание в выписке</h5><p class="meta">Никому ничего нажимать не нужно.</p>');
+    if (s === 4) h += card('fin', 'все участники заявки', okl('Заявка № ' + e.no + ' оплачена') + '<p class="meta" style="margin-top:6px">' + (solid ? 'Списание найдено в выписке, документ получен из банка.' : 'Документ приложил ' + e.payer + '.') + '</p><span class="file"><svg><use href="#i-doc"/></svg>' + e.doc + '</span>');
+    return h;
+  };
+  var cell = function(k, html){ return '<td data-c="' + k + '">' + html + '</td>'; };
+  var sheetHTML = function(){
+    var s = D.step, e = E();
+    var h = '<table class="sheet"><thead><tr><th>№</th><th>Контрагент</th><th>Сумма</th><th>Менеджер А</th><th>Менеджер Б</th><th>Оплата</th></tr></thead><tbody>'
+      + '<tr class="old"><td>0410</td><td>ООО «Лумора»<small>юрлицо РФ</small></td><td class="num">62 300 ₽</td><td><span class="st ok">да</span></td><td><span class="st ok">да</span></td><td>оплачено 18.11<small>payment_0410.pdf</small></td></tr>'
+      + '<tr class="old"><td>0411</td><td>PT Datamint<small>юрлицо Индонезия</small></td><td class="num">Rp 12 800 000</td><td><span class="st ok">да</span></td><td><span class="st ok">да</span></td><td>оплачено 19.11<small>bukti_0411.pdf</small></td></tr>';
+    if (s >= 1) {
+      var ap = function(w){ var r = D[w]; return r ? '<span class="st ok">да · ' + r.t + '</span>' : '<button type="button" class="cellbtn" data-act="s-' + w + '">поставить «да»</button>'; };
+      var p = s === 1 ? '<span class="st">ждёт согласования</span>' : s === 2 ? '<span class="st wait">в окне 16:00</span>' : s === 3 ? '<span class="st wait">подписано 16:00</span>' : '<span class="st ok">оплачено ' + tm(D.closedAt) + '</span><small>' + e.doc + '</small>';
+      h += '<tr data-k="row"><td>' + e.no + '</td><td>' + e.name + '<small>юрлицо ' + e.ent + '</small></td><td class="num">' + e.sum + '</td>' + cell('a', ap('a')) + cell('b', ap('b')) + cell('pay', p) + '</tr>';
+    } else {
+      h += '<tr class="old"><td colspan="6">Новая строка появится здесь после подачи заявки</td></tr>';
+    }
+    return h + '</tbody></table>';
+  };
+  var logHTML = function(){
+    if (!D.log.length) return '<li class="empty">Пока пусто. Каждое действие попадёт сюда со временем.</li>';
+    return D.log.map(function(l, i){ return '<li data-k="log-' + i + '"' + (l.sys ? ' class="sys"' : '') + '><time>' + l.t + '</time><span>' + l.text + '</span></li>'; }).join('');
+  };
+  var dur = function(){ if (D.closedAt == null) return '—'; var m = D.closedAt - D.t0; return Math.floor(m / 60) + ' ч ' + (m % 60) + ' мин'; };
+  var cntHTML = function(){
+    return '<div><b>0</b><span>вопросов «когда?» в общем чате</span></div><div><b>' + D.touches + '</b><span>нажатий людей</span></div><div><b>0</b><span>походов в таблицу за статусом</span></div><div><b>' + dur() + '</b><span>от заявки до оплаты</span></div>';
+  };
+  var nowHTML = function(){
+    var s = D.step, e = E();
+    if (s === 0) return 'Сейчас ход: <b>Сотрудник №1</b>. Нажмите кнопку в окне мессенджера.';
+    if (s === 1) return 'Сейчас ход: <b>' + (!D.a && !D.b ? 'Менеджер А и Менеджер Б' : !D.a ? 'Менеджер А' : 'Менеджер Б') + '</b>. Согласуйте кнопкой в боте или прямо в таблице: связь двусторонняя.';
+    if (s === 2) return 'Сейчас ход: <b>' + e.payer + '</b>. ' + (D.variant === 'solid' ? 'Черновик платёжки уже готов, осталось подписать.' : 'Оплатите и подтвердите одной кнопкой.');
+    if (s === 3) return 'Сейчас ход: <b>система</b>. Она сама найдёт списание в выписке.';
+    return 'Заявка закрыта. Можно сыграть другой вариант или другое юрлицо.';
+  };
+  var endText = function(){
+    var e = E();
+    return 'Заявка № ' + e.no + ' прошла путь от подачи до оплаты. В общий чат не написано ни одного сообщения, в таблицу за статусом никто не заходил. '
+      + (D.variant === 'solid' ? 'Оплату подтвердила выписка банка, а не человек.' : 'Оплату подтвердил плательщик одной кнопкой. В надёжном варианте это делает выписка банка.');
+  };
+
+  var render = function(){
+    feed.innerHTML = feedHTML(); sheet.innerHTML = sheetHTML(); logEl.innerHTML = logHTML(); cnts.innerHTML = cntHTML(); now.innerHTML = nowHTML();
+    end.hidden = D.step !== 4; if (D.step === 4) end.textContent = endText();
+    $$('[data-k]', box).forEach(function(n){ var k = n.getAttribute('data-k'); if (!D.seen[k]) { D.seen[k] = 1; n.classList.add('in'); } });
+    $$('td[data-c]', sheet).forEach(function(td){ var k = td.getAttribute('data-c'), v = td.textContent; if (D.prev[k] !== undefined && D.prev[k] !== v) td.classList.add('flash'); D.prev[k] = v; });
+    logEl.scrollTop = logEl.scrollHeight;
+    $$('[data-set]', box).forEach(function(b){ var p = b.getAttribute('data-set').split(':'); b.setAttribute('aria-pressed', String(D[p[0]] === p[1])); });
+  };
+  var act = function(a, manual){
+    if (manual && D.auto && a !== 'auto') { D.auto = false; clearTimeout(autoT); }
+    if (a === 'reset') { reset(D); render(); return; }
+    if (a === 'auto') { startAuto(); return; }
+    if (a === 'submit') submit();
+    else if (a === 'a-a') approve('a', 'bot'); else if (a === 'a-b') approve('b', 'bot');
+    else if (a === 's-a') approve('a', 'sheet'); else if (a === 's-b') approve('b', 'sheet');
+    else if (a === 'q-a') ask('a'); else if (a === 'q-b') ask('b');
+    else if (a === 'pay') pay();
+    render();
+  };
+  var startAuto = function(){
+    reset({ variant: D.variant, entity: D.entity }); D.auto = true; render();
+    var seq = ['submit', 'a-a', 's-b', 'pay'], i = 0;
+    (function next(){
+      autoT = setTimeout(function(){
+        if (!D.auto) return;
+        act(seq[i++], false);
+        if (i < seq.length) next(); else D.auto = false;
+      }, RM ? 600 : 1400);
+    })();
+  };
+  box.addEventListener('click', function(ev){
+    var t = ev.target.closest('[data-set],[data-act]');
+    if (!t || !box.contains(t)) return;
+    if (t.hasAttribute('data-set')) {
+      var p = t.getAttribute('data-set').split(':'), keep = { variant: D.variant, entity: D.entity };
+      keep[p[0]] = p[1]; reset(keep); render(); return;
+    }
+    var inside = !!t.closest('.feed,.sheet-w');
+    act(t.getAttribute('data-act'), true);
+    if (inside) { var nb = $('.feed .btn-acc', box); if (nb) nb.focus({ preventScroll: true }); }
+  });
+  reset(null); render();
+}
+
+/* обезличивание: тот же список для другой роли */
+var ciph = $('#cipher');
+if (ciph) {
+  var FIN = [['ООО «Вектор»', 'Реклама, счёт № 118', '184 500 ₽'], ['PT Nusa Kreatif', 'Продакшн, INV-2211', 'Rp 48 500 000'], ['ИП Соколов А.', 'Дизайн, акт № 7', '62 300 ₽']];
+  var DEV = [['Контрагент 7F2A', 'скрыто', '▒▒▒ ▒▒▒ ₽'], ['Контрагент C41D', 'скрыто', 'Rp ▒▒ ▒▒▒ ▒▒▒'], ['Контрагент 09BE', 'скрыто', '▒▒ ▒▒▒ ₽']];
+  var cells = $$('tbody td', ciph), G = '▒░▓▒░0123456789';
+  var scr = function(el, to){
+    if (RM) { el.textContent = to; return; }
+    var from = el.textContent, n = Math.max(from.length, to.length), t0 = performance.now(), d = 560;
+    el._t = t0;
+    (function fr(t){
+      if (el._t !== t0) return;
+      var p = Math.min(1, Math.max(0, (t - t0) / d)), k = Math.floor(p * n), o = '';
+      for (var i = 0; i < n; i++) {
+        if (i < k) o += to.charAt(i);
+        else { var c = i < to.length ? to.charAt(i) : from.charAt(i); o += c === ' ' ? ' ' : G.charAt((Math.random() * G.length) | 0); }
+      }
+      el.textContent = o;
+      if (p < 1) requestAnimationFrame(fr); else el.textContent = to;
+    })(t0);
+  };
+  ciph.addEventListener('click', function(ev){
+    var b = ev.target.closest('[data-role]');
+    if (!b) return;
+    var src = b.getAttribute('data-role') === 'dev' ? DEV : FIN;
+    $$('[data-role]', ciph).forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+    cells.forEach(function(td, i){ scr(td, src[(i / 3) | 0][i % 3]); });
+  });
+}
+
+/* шторка сравнения двух экранов */
+$$('.cmp').forEach(function(c){
+  var inp = $('input', c), drag = false, hinted = false;
+  var set = function(v){ v = Math.max(0, Math.min(100, v)); c.style.setProperty('--p', v + '%'); inp.value = String(Math.round(v)); };
+  var at = function(e){ var r = c.getBoundingClientRect(); if (r.width) set((e.clientX - r.left) / r.width * 100); };
+  inp.addEventListener('input', function(){ hinted = true; set(+inp.value); });
+  c.addEventListener('pointerdown', function(e){ drag = true; hinted = true; try { c.setPointerCapture(e.pointerId); } catch (_) {} at(e); });
+  c.addEventListener('pointermove', function(e){ if (drag) at(e); });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function(t){ c.addEventListener(t, function(){ drag = false; }); });
+  if (!RM && HAS_IO) {
+    var o = new IntersectionObserver(function(es){
+      if (!es[0].isIntersecting || hinted) return;
+      hinted = true; o.disconnect();
+      var t0 = null, K = [52, 24, 76, 52];
+      var ease = function(x){ return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+      requestAnimationFrame(function fr(t){
+        if (drag) return;
+        if (t0 === null) t0 = t;
+        var p = Math.min(1, (t - t0) / 2200), seg = Math.min(2, Math.floor(p * 3)), lp = ease(Math.min(1, p * 3 - seg));
+        set(K[seg] + (K[seg + 1] - K[seg]) * lp);
+        if (p < 1) requestAnimationFrame(fr);
+      });
+    }, { threshold: 0.6 });
+    o.observe(c);
+  }
+});
+})();
+</script>
+</body>
+</html>
